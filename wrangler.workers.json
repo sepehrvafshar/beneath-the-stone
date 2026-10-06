@@ -4,5 +4,6 @@
   "workers_dev": true,
   "assets": {
     "directory": "./dist"
-  }
+  },
+  "preview_urls": false
 }

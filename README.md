@@ -2,7 +2,9 @@
 
 A nonlinear, text-based browser game set across three ages of Mammoth Cave, Kentucky: pre-contact Indigenous inhabitation around 3000 BCE, the lantern-lit commercial tours of the 1840s, and a present-day preservation meeting. You play a visiting researcher. Eight tracked ethical decisions about recording, sharing, and preserving generate one of three ending reflections: the Archivist's Path, the Keeper's Path, or the Steward's Path.
 
-Play: https://beneath-the-stone.pages.dev
+Play: https://beneath-the-stone.sepehr-vaezafshar.workers.dev
+
+Alternate address: https://beneath-the-stone.pages.dev
 
 Recommended age 18+. Themes include Indigenous heritage, slavery, archaeological remains, and ethical decision-making.
 
@@ -43,7 +45,11 @@ npm run smoke      # plays to all three endings, verifies zero network requests
 
 Source: https://github.com/sepehrvafshar/beneath-the-stone
 
-Cloudflare Pages deploys the `main` branch. Use no framework, the build command `mkdir -p dist && cp index.html _headers dist/`, and `dist` as the output directory. This copies the tested game unchanged and keeps review documents and development files out of the live site. Keep Web Analytics disabled so the game makes no additional network requests.
+Cloudflare Workers deploys the `main` branch. Use the build command `mkdir -p dist && cp index.html _headers dist/` and the deploy command `npx wrangler deploy --config wrangler.workers.json`. The configuration serves static assets from `dist`; the game needs no server-side application code.
+
+The existing Cloudflare Pages site remains available and deploys the same branch, using the same build command and `dist` as its output directory. Both hosts receive the tested game unchanged, with the same security headers. Keep Web Analytics disabled so the game makes no additional network requests.
+
+Saved sessions belong to the site address where they were created. To continue a save made on the Pages address, use that address; saves do not automatically transfer to the Workers address.
 
 ## Privacy
 
