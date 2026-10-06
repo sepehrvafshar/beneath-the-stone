@@ -1,0 +1,9 @@
+node_modules/
+review/snapshots/
+game/
+*.log
+.DS_Store
+dist/
+/0/
+/*.zip
+/review/*.zip

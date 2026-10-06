@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use or study this game, please cite the companion paper."
+title: "Beneath the Stone"
+type: software
+authors:
+  - family-names: "Vaez Afshar"
+    given-names: "Sepehr"
+    affiliation: "University of Illinois Urbana-Champaign"
+  - family-names: "Shackelford"
+    given-names: "Laura"
+    affiliation: "University of Illinois Urbana-Champaign"
+year: 2026
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "Beneath the Stone: A Low-Resource Text-Based Design Framework for Ethical Digital Representation of Marginalized Heritage"
+  authors:
+    - family-names: "Vaez Afshar"
+      given-names: "Sepehr"
+    - family-names: "Shackelford"
+      given-names: "Laura"
+  collection-title: "Proceedings of SIGraDi 2026"
+  year: 2026

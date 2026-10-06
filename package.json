@@ -1,0 +1,16 @@
+{
+  "name": "beneath-the-stone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A nonlinear text game about what enters the record at Mammoth Cave. Companion to a SIGraDi 2026 paper.",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs index.html",
+    "smoke": "node scripts/smoke.mjs index.html",
+    "snapshots": "node scripts/snapshots.mjs index.html review/snapshots",
+    "serve": "npx --yes serve -l 8080 ."
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}
