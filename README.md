@@ -45,7 +45,7 @@ npm run smoke      # plays to all three endings, verifies zero network requests
 
 Source: https://github.com/sepehrvafshar/beneath-the-stone
 
-Cloudflare Workers deploys the `main` branch. Use the build command `mkdir -p dist && cp index.html _headers dist/` and the deploy command `npx wrangler deploy --config wrangler.workers.json`. The configuration serves static assets from `dist`; the game needs no server-side application code.
+Cloudflare Workers deploys the `main` branch. Use the build command `mkdir -p dist && cp index.html _headers robots.txt dist/` and the deploy command `npx wrangler deploy --config wrangler.workers.json`. The configuration serves static assets from `dist`; the game needs no server-side application code.
 
 The existing Cloudflare Pages site remains available and deploys the same branch, using the same build command and `dist` as its output directory. Both hosts receive the tested game unchanged, with the same security headers. Keep Web Analytics disabled so the game makes no additional network requests.
 
