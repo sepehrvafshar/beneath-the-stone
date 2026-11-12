@@ -90,8 +90,18 @@ if (/\bTOTAL_HISTORICAL_NOTES\s*=\s*(?:\(\s*)*[+-]?(?:\d|['"`]\s*\d)/.test(html)
   fail('D4', 'historical note total declaration missing');
 }
 
+// Canonical and social metadata identify documents; they never load resources.
+// Exempt only these exact tags and URLs, not general links or matching hostnames.
+const metadataOnlyTags = [
+  '<link rel="canonical" href="https://bts.sepafshar.com/">',
+  '<meta property="og:url" content="https://bts.sepafshar.com/">',
+  '<meta property="og:image" content="https://bts.sepafshar.com/og-1200x630.png">',
+];
+let dependencyHtml = html;
+for (const tag of metadataOnlyTags) dependencyHtml = dependencyHtml.replace(tag, '');
+
 // D5 external dependencies
-const extLinks = [...html.matchAll(/<(link|script|iframe|img|source|video|audio|object|embed)\b[^>]*\b(href|src)\s*=\s*["']((https?:)?\/\/[^"']+)["']/gi)].map(m => m[3]);
+const extLinks = [...dependencyHtml.matchAll(/<(link|script|iframe|img|source|video|audio|object|embed)\b[^>]*\b(href|src)\s*=\s*["']((https?:)?\/\/[^"']+)["']/gi)].map(m => m[3]);
 if (extLinks.length === 0) pass('D5', 'no external <link>/<script>/media URLs'); else fail('D5', `external resource URL(s): ${extLinks.join(', ')}`);
 const preconnect = (html.match(/rel=["'](preconnect|dns-prefetch|prefetch|preload)["']/gi) || []).length;
 if (preconnect === 0) pass('D5', 'no preconnect/prefetch hints'); else fail('D5', `${preconnect} preconnect/prefetch hint(s)`);
@@ -108,7 +118,7 @@ for (const api of ['fetch(', 'XMLHttpRequest', 'sendBeacon', 'WebSocket(', 'Even
   if (n === 0) pass('D6', `no ${api}`); else fail('D6', `${n} use(s) of ${api}`);
 }
 // Any remaining absolute http(s) URL anywhere is reported for manual review (allowlist: references and citations).
-const allUrls = [...new Set([...html.matchAll(/https?:\/\/[^\s"'<>)]+/g)].map(m => m[0]))];
+const allUrls = [...new Set([...dependencyHtml.matchAll(/https?:\/\/[^\s"'<>)]+/g)].map(m => m[0]))];
 const allow = /doi\.org|nps\.gov|github\.com|sigradi|w3\.org\/2000\/svg|w3\.org\/1999\/xlink|schema\.org|creativecommons\.org|scripts\.sil\.org/i;
 const suspicious = allUrls.filter(u => !allow.test(u));
 if (suspicious.length === 0) pass('D6', `all ${allUrls.length} absolute URL(s) are citation/namespace URLs`);

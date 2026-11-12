@@ -2,7 +2,7 @@
 
 A nonlinear, text-based browser game set across three ages of Mammoth Cave, Kentucky: pre-contact Indigenous inhabitation around 3000 BCE, the lantern-lit commercial tours of the 1840s, and a present-day preservation meeting. You play a visiting researcher. Eight tracked ethical decisions about recording, sharing, and preserving generate one of three ending reflections: the Archivist's Path, the Keeper's Path, or the Steward's Path.
 
-Play: https://beneath-the-stone.sepehr-vaezafshar.workers.dev
+Play: https://bts.sepafshar.com
 
 Alternate address: https://beneath-the-stone.pages.dev
 
@@ -43,13 +43,17 @@ npm run smoke      # plays to all three endings, verifies zero network requests
 
 ## Publishing
 
+Main address: https://bts.sepafshar.com/
+
 Source: https://github.com/sepehrvafshar/beneath-the-stone
 
-Cloudflare Workers deploys the `main` branch. Use the build command `mkdir -p dist && cp index.html _headers robots.txt dist/` and the deploy command `npx wrangler deploy --config wrangler.workers.json`. The configuration serves static assets from `dist`; the game needs no server-side application code.
+Cloudflare Workers deploys `main` with build command `node scripts/build.mjs workers` and deploy command `npx wrangler deploy --config wrangler.workers.json`. Static files are packaged into `dist` without transforming the game. The hosting-only `worker.mjs` permanently redirects the original workers.dev hostname to the custom domain and passes other requests to static assets.
 
-The existing Cloudflare Pages site remains available and deploys the same branch, using the same build command and `dist` as its output directory. Both hosts receive the tested game unchanged, with the same security headers. Keep Web Analytics disabled so the game makes no additional network requests.
+The legacy Cloudflare Pages project deploys the same branch with build command `node scripts/build.mjs pages` and output directory `dist`. Its `_redirects` file permanently sends requests to the custom domain. Keep Web Analytics disabled.
 
-Saved sessions belong to the site address where they were created. To continue a save made on the Pages address, use that address; saves do not automatically transfer to the Workers address.
+Saved sessions are scoped to their original address. Redirects do not transfer existing saves from workers.dev or pages.dev to bts.sepafshar.com.
+
+The canonical tag, Open Graph metadata, robots.txt, and sitemap.xml identify the custom domain. The share image is an existing portfolio screenshot and is not loaded by the game. The sitemap lists the only public document, `/`; About, Credits, and story passages are views inside that document. Update its lastmod when the HTML is meaningfully changed; the current date records this metadata release.
 
 ## Privacy
 
