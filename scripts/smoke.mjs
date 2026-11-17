@@ -73,7 +73,7 @@ async function playToEnding(browser, strategy, viewport) {
   const page = await ctx.newPage();
   const requests = [];
   page.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:')) requests.push(r.url()); });
-  await page.goto(url); await page.waitForTimeout(1500);
+  await page.goto(url); await page.locator('#visitIntro').waitFor({ state: 'detached', timeout: 6000 });
   await page.getByRole('button', { name: /begin journey/i }).click();
   await assertJourneyDialog(page);
   if (await page.getByRole('button', { name: 'Load', exact: true }).isDisabled()) ok('new session: Load is disabled without a saved game');
@@ -148,7 +148,13 @@ try {
   // Keyboard: Tab to the first choice on the start node and press Enter.
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto(url); await page.waitForTimeout(1200);
+  await page.goto(url);
+  await page.locator('#visitIntro[open]').waitFor();
+  await page.keyboard.press('Escape');
+  await page.locator('#visitIntro').waitFor({ state: 'detached' });
+  await page.waitForFunction(() => document.activeElement?.id === 'heroTitle', null, { timeout: 1000 });
+  if (await page.locator('#heroTitle').evaluate(el => el === document.activeElement)) ok('keyboard: Escape dismisses the intro and restores title focus');
+  else bad('keyboard: intro did not restore title focus');
   await page.getByRole('button', { name: /begin journey/i }).focus(); await page.keyboard.press('Enter');
   await assertJourneyDialog(page);
   await page.getByRole('button', { name: 'New Game', exact: true }).focus(); await page.keyboard.press('Enter');

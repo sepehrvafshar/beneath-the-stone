@@ -26,7 +26,7 @@ try {
   for (const [tag, viewport] of [['desktop', { width: 1440, height: 900 }], ['mobile', { width: 390, height: 844 }]]) {
     const ctx = await browser.newContext({ viewport, reducedMotion: 'reduce' });
     const page = await ctx.newPage();
-    await page.goto(url); await page.waitForTimeout(1800);
+    await page.goto(url); await page.locator('#visitIntro').waitFor({ state: 'detached', timeout: 6000 });
     await shot(page, `title-${tag}`);
     if (tag === 'desktop') {
       await click(page, /about/i); await shot(page, 'about'); await click(page, /return to title/i, 1500);

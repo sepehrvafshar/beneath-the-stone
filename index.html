@@ -1258,26 +1258,14 @@ body[data-screen="title"].title-transitioning { pointer-events:none; }
 .title-menu .menu-secondary { background:rgba(7,8,8,.46); border-color:rgba(205,170,120,.24); color:rgba(238,221,195,.72); backdrop-filter:blur(8px); }
 .title-menu .menu-secondary:hover,.title-menu .menu-secondary:focus-visible { transform:translateY(-2px); color:#f5e7d0; border-color:rgba(225,181,119,.58); background:rgba(190,126,53,.10); box-shadow:0 10px 28px rgba(0,0,0,.35); }
 
-.title-intro { position:absolute; inset:0; z-index:20; display:grid; place-items:center; background:#010202; transition:opacity .9s ease,visibility .9s; }
-.title-intro.done { opacity:0; visibility:hidden; pointer-events:none; }
-.intro-lines { text-align:center; color:#ead8ba; padding:2rem; }
-.intro-lines p { margin:0; opacity:0; font-size:clamp(1rem,2.2vw,1.4rem); letter-spacing:.08em; animation:introLine 1.15s ease forwards; }
-.intro-lines p:nth-child(2){animation-delay:1.25s}.intro-lines strong{display:block;margin-top:2.6rem;font:600 clamp(2.2rem,7vw,6rem)/.9 Georgia,serif;text-transform:uppercase;letter-spacing:.16em;color:#dfb172;opacity:0;animation:introTitle 1.3s ease 2.45s forwards}
-.intro-skip { position:absolute; right:1.3rem; bottom:1.25rem; z-index:22; min-width:0; padding:.55rem .8rem; border:0; background:transparent; color:rgba(236,219,191,.5); font:500 .64rem/1 Inter,sans-serif; letter-spacing:.15em; text-transform:uppercase; }
-.intro-skip::before,.intro-skip::after{display:none!important}.intro-skip:hover,.intro-skip:focus-visible{transform:none;color:#fff;background:transparent;box-shadow:none}
-.title-hero.menu-hidden .title-card,.title-hero.menu-hidden .title-topbar{opacity:0;transform:scale(.985);}
 .title-card,.title-topbar{transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.8,.2,1)}
 .title-hero.cave-entering .title-card,.title-hero.cave-entering .title-topbar{opacity:0;transform:scale(.94)}
 .title-hero.cave-entering .title-world{transition:transform 1.25s cubic-bezier(.2,.7,.1,1),filter 1.25s;transform:scale(1.42);filter:brightness(.52) blur(2px)}
 .title-hero.cave-entering .title-flashlight{opacity:0}
 .title-hero.cave-entering::after{content:"";position:absolute;inset:0;z-index:19;background:#000;opacity:0;animation:enterBlack 1.25s ease forwards}
-@keyframes introLine{0%{opacity:0;transform:translateY(10px);filter:blur(4px)}35%,72%{opacity:1;transform:none;filter:none}100%{opacity:.08}}
-@keyframes introTitle{from{opacity:0;letter-spacing:.32em;filter:blur(7px)}to{opacity:1;letter-spacing:.16em;filter:none}}
 @keyframes enterBlack{0%,52%{opacity:0}100%{opacity:1}}
 @media(max-width:620px){.title-topbar{padding:1rem}.title-card{padding:4.5rem 1rem 4.7rem}.title-main{font-size:clamp(2.65rem,15vw,4.4rem)}.title-mark{width:100px;height:100px}.title-tagline{font-size:.88rem;margin:1rem 0 1.45rem}.title-menu{width:min(290px,92vw)}.title-vignette{box-shadow:inset 0 0 100px 35px #000}}
 @media(prefers-reduced-motion:reduce){
-html:not([data-motion="full"]) .title-intro { display: none; }
-html:not([data-motion="full"]) .title-hero.menu-hidden .title-card, html:not([data-motion="full"]) .title-hero.menu-hidden .title-topbar{ opacity: 1; transform: none; }
 html:not([data-motion="full"]) .title-world, html:not([data-motion="full"]) .title-hero.cave-entering .title-world { transform: none !important; transition: none !important; }
 html:not([data-motion="full"]) .title-flashlight { display: none; }
 html:not([data-motion="full"]) .title-hero.cave-entering::after { animation: auto ease 0s 1 normal none running none; opacity: 1; }
@@ -1750,6 +1738,69 @@ p, li, button, .artifact, .entry, .exam-note { overflow-wrap: anywhere; }
   .title-card { width: min(72vw, 1080px); }
   .title-main { font-size: clamp(3rem, 4.2vw, 5.4rem); }
 }
+/* Once-per-visit loading screen. Background animation waits for dismissal. */
+html.visit-intro-active, html.visit-intro-active body { overflow:hidden; }
+html.visit-intro-active :is(body, body > :not(#visitIntro), body > :not(#visitIntro) *),
+html.visit-intro-active :is(body, body > :not(#visitIntro), body > :not(#visitIntro) *)::before,
+html.visit-intro-active :is(body, body > :not(#visitIntro), body > :not(#visitIntro) *)::after {
+  animation-play-state:paused!important;
+}
+#visitIntro {
+  position:fixed; inset:0; width:100%; height:100%; height:100dvh; max-width:none; max-height:none;
+  margin:0; padding:clamp(16px,4vw,48px); box-sizing:border-box; border:0; border-radius:0;
+  overflow:auto; color:#f0e4cf; background:radial-gradient(ellipse at 50% 44%,#251c12 0%,#0b0e0d 48%,#050706 85%);
+}
+#visitIntro[open] { display:grid; place-items:center; }
+#visitIntro::backdrop { background:#050706; }
+.visit-intro-card {
+  position:relative; width:min(100%,600px); padding:clamp(24px,5vw,48px); box-sizing:border-box;
+  text-align:center; border:1px solid #8b7355; border-radius:28px;
+  background:radial-gradient(ellipse at 50% 0%,#d8a15e0d,transparent 65%),#101311;
+  box-shadow:0 28px 110px #0008,inset 0 1px #e8d5b00a;
+}
+#visitIntro .visit-intro-logo {
+  display:block; width:160px; max-width:44%; height:auto; margin:0 auto 20px;
+  animation:visitLogoIn 1s ease-out both;
+}
+#visitIntro .visit-intro-logo .trace {
+  stroke-dasharray:220; stroke-dashoffset:220; animation:visitTraceIn 1.5s ease-out .15s forwards;
+}
+#visitIntro h2 { margin:0; font:600 clamp(1.65rem,4.5vw,2.6rem)/1.3 var(--font-display); letter-spacing:.05em; color:#e8d5b0; }
+#visitIntro h2:focus { outline:none; }
+#visitIntro .visit-intro-kicker { margin:12px 0 30px; font:400 .66rem/1.7 var(--font-ui); letter-spacing:.18em; text-transform:uppercase; color:#d0b78d; }
+.visit-intro-track { height:6px; overflow:hidden; border-radius:8px; background:#242820; border:1px solid #8b7355; }
+.visit-intro-fill { display:block; width:0; height:100%; background:#e0a45c; transition:width .08s linear; }
+.visit-intro-meta { display:flex; gap:12px; justify-content:space-between; align-items:baseline; margin:12px 0 0; color:#d0b78d; font:400 .78rem/1.6 var(--font-ui); }
+#visitIntro .visit-intro-status { margin:0; text-align:left; font:inherit; color:inherit; }
+.visit-intro-percent { font-variant-numeric:tabular-nums; }
+#visitIntro .visit-intro-fact { display:grid; align-items:center; min-height:3.8em; margin:24px 0 18px; font:400 1rem/1.6 var(--font-narrative); color:#e8d5b0; }
+#visitIntro .visit-intro-skip {
+  display:inline-flex; align-items:center; justify-content:center; gap:12px; width:auto; min-width:144px;
+  min-height:44px; margin:0; padding:10px 18px; border:1px solid #8b7355; border-radius:12px;
+  font:500 .8rem/1.5 var(--font-ui); letter-spacing:.02em; color:#e8d5b0; background:#191c18;
+  box-shadow:none; transform:none; animation:none;
+}
+#visitIntro .visit-intro-skip::before, #visitIntro .visit-intro-skip::after { display:none; }
+#visitIntro .visit-intro-skip:hover { border-color:#e0a45c; box-shadow:0 0 24px #e0a45c22; }
+#visitIntro .visit-intro-skip:focus-visible { outline:2px solid #e8d5b0; outline-offset:4px; }
+#visitIntro kbd { font:inherit; color:#d0b78d; padding:2px 5px; border:1px solid #8b7355; border-radius:4px; }
+@keyframes visitLogoIn { from { opacity:0; transform:translateY(8px) scale(.94); } to { opacity:1; transform:none; } }
+@keyframes visitTraceIn { to { stroke-dashoffset:0; } }
+#visitIntro[data-reduced="true"], #visitIntro[data-reduced="true"] *, #visitIntro[data-reduced="true"]::backdrop {
+  animation:none!important; transition:none!important;
+}
+#visitIntro[data-reduced="true"] .trace { stroke-dashoffset:0; }
+html[data-reading="plain"] #visitIntro :is(h2,p) { font-family:Inter,sans-serif; font-style:normal; line-height:1.7; }
+@media(forced-colors:active) {
+  #visitIntro, #visitIntro::backdrop, .visit-intro-card { background:Canvas; color:CanvasText; }
+  #visitIntro :is(h2,p,kbd,.visit-intro-meta) { color:CanvasText; }
+  #visitIntro :is(.visit-intro-card,.visit-intro-track,.visit-intro-skip,kbd) { border-color:CanvasText; }
+  #visitIntro .visit-intro-fill { background:Highlight; forced-color-adjust:none; }
+  #visitIntro .visit-intro-logo [stroke] { stroke:CanvasText; }
+  #visitIntro .visit-intro-skip { background:ButtonFace; color:ButtonText; }
+  #visitIntro .visit-intro-skip:focus-visible { outline-color:Highlight; }
+}
+
 </style>
 <style>
 body{font-family:'Source Serif 4',serif;}
@@ -2054,11 +2105,6 @@ body[data-era="L3"]::before{
     repeating-linear-gradient(-14deg,transparent 0 74px,rgba(145,202,182,.028) 75px 77px),
     linear-gradient(180deg,rgba(5,8,8,.46),rgba(8,24,20,.88))!important;
 }
-/* Let the opening beats breathe longer before fading. */
-.intro-lines p{animation-duration:1.9s!important}
-.intro-lines p:nth-child(2){animation-delay:1.75s!important}
-.intro-lines strong{animation-delay:3.65s!important;animation-duration:1.65s!important}
-@keyframes introLine{0%{opacity:0;transform:translateY(10px);filter:blur(4px)}24%,84%{opacity:1;transform:none;filter:none}100%{opacity:.16}}
 
 /* ---------- v34: compact professional credits ---------- */
 .credits-page{
@@ -3256,8 +3302,6 @@ html[data-motion="reduced"] #fadeOverlay { display: none; }
 
 html[data-motion="reduced"] .choices.revealed, html[data-motion="reduced"] .note-discovery, html[data-motion="reduced"] .quiet-moment { transition: none; animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .title-cave-art, html[data-motion="reduced"] .title-light-beam, html[data-motion="reduced"] .title-mist, html[data-motion="reduced"] .title-particles i, html[data-motion="reduced"] .title-card, html[data-motion="reduced"] .title-mark{ animation: auto ease 0s 1 normal none running none !important; }
-html[data-motion="reduced"] .title-intro { display: none; }
-html[data-motion="reduced"] .title-hero.menu-hidden .title-card, html[data-motion="reduced"] .title-hero.menu-hidden .title-topbar{ opacity: 1; transform: none; }
 html[data-motion="reduced"] .title-world, html[data-motion="reduced"] .title-hero.cave-entering .title-world { transform: none !important; transition: none !important; }
 html[data-motion="reduced"] .title-flashlight { display: none; }
 html[data-motion="reduced"] .title-hero.cave-entering::after { animation: auto ease 0s 1 normal none running none; opacity: 1; }
@@ -3422,14 +3466,6 @@ function setMotionPreference(reduced, persist = true) {
   document.documentElement.dataset.motion = mode;
   document.getElementById('motionControl').setAttribute('aria-pressed', String(reduced));
   if (persist) { motionUsesSystem = false; saveAccessibilityPreference('motion', mode); }
-  if (reduced) {
-    const intro = document.querySelector('.title-intro');
-    if (intro) {
-      clearTimeout(Number(intro.dataset.timer));
-      intro.closest('.title-hero')?.classList.remove('menu-hidden');
-      intro.remove();
-    }
-  }
 }
 const savedMotionPreference = readAccessibilityPreference('motion', 'system');
 let motionUsesSystem = savedMotionPreference === 'system';
@@ -4240,9 +4276,6 @@ function loadSavedSession() {
 }
 function returnToMainPage() {
   resetGame('title');
-  const wrap = content.querySelector('.title-hero');
-  const intro = wrap?.querySelector('.title-intro');
-  if (intro) finishTitleIntro(wrap, intro);
 }
 function updateJourneySaveStatus() {
   const result = readSavedSession();
@@ -4480,7 +4513,7 @@ function render(nodeId) {
     renderTitle(wrap);
     content.appendChild(wrap);
     window.scrollTo({ top: 0 });
-    if (prefersReducedMotion()) focusPassageHeading(wrap, '#heroTitle');
+    if (!showVisitIntro(wrap)) focusPassageHeading(wrap, '#heroTitle');
     return;
   }
 
@@ -4893,8 +4926,93 @@ function armInitialAudioExperience(){
   document.addEventListener('pointermove',activate,{capture:true,passive:true});
 }
 
+// The visit lasts for this tab's session; blocked storage falls back to memory.
+let visitIntroSeen = false;
+try { visitIntroSeen = sessionStorage.getItem('bts-visit-intro-seen') === '1'; } catch {}
+function showVisitIntro(wrap) {
+  const home = location.protocol === 'file:' || location.pathname === '/' || location.pathname === '/index.html';
+  if (visitIntroSeen || !home || currentNodeId !== 'title') return false;
+  visitIntroSeen = true;
+  try { sessionStorage.setItem('bts-visit-intro-seen', '1'); } catch {}
+  const root = document.documentElement;
+  root.classList.add('visit-intro-active');
+  const dialog = document.createElement('dialog');
+  dialog.id = 'visitIntro';
+  dialog.setAttribute('aria-labelledby', 'visitIntroTitle');
+  dialog.setAttribute('aria-modal', 'true');
+  dialog.innerHTML = `<div class="visit-intro-card">
+    <div class="visit-intro-emblem" aria-hidden="true"></div>
+    <h2 id="visitIntroTitle" tabindex="-1">Beneath the Stone</h2>
+    <p class="visit-intro-kicker">Memory · Evidence · Stewardship</p>
+    <div class="visit-intro-track" role="progressbar" aria-label="Intro progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i class="visit-intro-fill"></i></div>
+    <div class="visit-intro-meta"><p class="visit-intro-status" role="status" aria-live="polite">Lighting the threshold</p><span class="visit-intro-percent" aria-hidden="true">0%</span></div>
+    <p class="visit-intro-fact">Three ages. Your choice of where to begin.</p>
+    <button type="button" class="visit-intro-skip">Skip intro <kbd aria-hidden="true">Esc</kbd></button>
+  </div>`;
+  const logo = wrap.querySelector('.title-mark').cloneNode(true);
+  logo.setAttribute('class', 'visit-intro-logo');
+  dialog.querySelector('.visit-intro-emblem').appendChild(logo);
+  const facts = [
+    'Three ages. Your choice of where to begin.',
+    'Eight decisions lead to three possible paths.',
+    `${TOTAL_HISTORICAL_NOTES} historical notes are waiting to be found.`
+  ];
+  const statuses = ['Lighting the threshold', 'Opening the notebook', 'Preparing your journey', 'Ready to explore'];
+  const bar = dialog.querySelector('[role="progressbar"]');
+  const fill = dialog.querySelector('.visit-intro-fill');
+  const percent = dialog.querySelector('.visit-intro-percent');
+  const status = dialog.querySelector('.visit-intro-status');
+  const fact = dialog.querySelector('.visit-intro-fact');
+  let done = false, frame = 0, shown = -1, lastPercent = -1;
+  const began = performance.now();
+  const reduced = () => systemMotionPreference.matches || prefersReducedMotion();
+  dialog.dataset.reduced = String(reduced());
+  const finish = () => {
+    if (done) return;
+    done = true;
+    cancelAnimationFrame(frame);
+    clearTimeout(deadline);
+    root.classList.remove('visit-intro-active');
+    dialog.close();
+    dialog.remove();
+    if (wrap.isConnected && currentNodeId === 'title') focusPassageHeading(wrap, '#heroTitle');
+    document.dispatchEvent(new CustomEvent('bts-intro-done'));
+  };
+  dialog.querySelector('button').addEventListener('click', finish);
+  dialog.addEventListener('cancel', event => { event.preventDefault(); finish(); });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); finish(); }
+  });
+  document.body.appendChild(dialog);
+  dialog.showModal();
+  dialog.querySelector('h2').focus({preventScroll:true});
+  // A short final hold makes 100% readable, within the four/two-second total.
+  const deadline = setTimeout(finish, reduced() ? 2000 : 4000);
+  function tick(now) {
+    if (done) return;
+    const reduce = reduced(), duration = reduce ? 2000 : 4000;
+    dialog.dataset.reduced = String(reduce);
+    const elapsed = now - began, ratio = Math.max(0, Math.min(1, elapsed / (duration - 200)));
+    const value = reduce ? Math.floor(ratio * 3) * 100 / 3 : Math.floor(ratio * 100);
+    const rounded = Math.round(value);
+    if (rounded !== lastPercent) {
+      lastPercent = rounded;
+      fill.style.width = rounded + '%';
+      bar.setAttribute('aria-valuenow', String(rounded));
+      percent.textContent = rounded + '%';
+    }
+    const step = Math.min(2, Math.floor(ratio * 3));
+    if (step !== shown) { shown = step; fact.textContent = facts[step]; status.textContent = statuses[step]; }
+    if (ratio === 1) status.textContent = statuses[3];
+    if (elapsed >= duration) finish();
+    else frame = requestAnimationFrame(tick);
+  }
+  frame = requestAnimationFrame(tick);
+  return true;
+}
+
 function renderTitle(wrap) {
-  wrap.classList.add('title-hero', 'menu-hidden');
+  wrap.classList.add('title-hero');
 
   const world = document.createElement('div');
   world.className = 'title-world';
@@ -4988,25 +5106,12 @@ function renderTitle(wrap) {
   const dismissHint=()=>hint.classList.add('used');
   wrap.addEventListener('pointermove',dismissHint,{once:true,passive:true});
 
-  const intro=document.createElement('div');intro.className='title-intro';intro.innerHTML='<div class="intro-lines"><p>A trace survives.</p><p>A meaning disappears.</p><strong>Beneath the Stone</strong></div>';
-  const skip=document.createElement('button');skip.className='intro-skip';skip.textContent='Skip intro';skip.addEventListener('click',()=>finishTitleIntro(wrap,intro));intro.appendChild(skip);wrap.appendChild(intro);
-  const introTimer=setTimeout(()=>finishTitleIntro(wrap,intro),6500); intro.dataset.timer=String(introTimer);
-  if (prefersReducedMotion()) { clearTimeout(introTimer); intro.remove(); wrap.classList.remove('menu-hidden'); }
-
   const pointer=(e)=>{if(prefersReducedMotion()) return; const r=wrap.getBoundingClientRect();const x=((e.clientX-r.left)/r.width)*100,y=((e.clientY-r.top)/r.height)*100;wrap.style.setProperty('--mx',x+'%');wrap.style.setProperty('--my',y+'%');wrap.style.setProperty('--px',((x-50)/50*18)+'px');wrap.style.setProperty('--py',((y-50)/50*14)+'px')};
   wrap.addEventListener('pointermove',pointer,{passive:true});
   wrap.addEventListener('pointerover',(e)=>{
     const target=e.target.closest('.title-eyebrow,.title-mark,.title-main,.title-tagline,.title-menu button,.title-topbar > span');
     if(target) target.classList.add('revealed');
   });
-}
-
-function finishTitleIntro(wrap,intro){
-  if(!intro || intro.classList.contains('done')) return;
-  const timer=Number(intro.dataset.timer); if(timer) clearTimeout(timer);
-  intro.classList.add('done'); wrap.classList.remove('menu-hidden');
-  setTimeout(()=>intro.remove(),950);
-  if (currentNodeId === 'title') focusPassageHeading(wrap, '#heroTitle');
 }
 
 function enterCave(wrap){
@@ -5731,8 +5836,10 @@ function renderReflection(wrap) {
   focusPassageHeading(wrap, '.path-card h2');
 }
 
-armInitialAudioExperience();
 render('title');
+if (document.getElementById('visitIntro')) {
+  document.addEventListener('bts-intro-done', armInitialAudioExperience, {once:true});
+} else armInitialAudioExperience();
 
 
 // ---------- v40: gameplay pointer light and local hover response ----------
