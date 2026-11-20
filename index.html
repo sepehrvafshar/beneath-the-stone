@@ -3380,6 +3380,16 @@ body #content .discovery-gate button,body #content .choices .is-continue{backgro
 .credits-and{font-size:.6em;letter-spacing:.06em;opacity:.75}
 /* #12 Keep playing is the safe default in the exit dialog. */
 #cancelExit{border-color:#e0a45c;background:#211b14}
+
+/* ---------- v55: tablet reading size ---------- */
+/* From large phones up, story text was 13.3-15px with 90-110 characters per line.
+   A rem value keeps the accessibility text-size steps working. */
+@media (min-width:480px){
+  body[data-screen="gameplay"],body[data-screen="gameplay"] #game,body[data-screen="gameplay"] #content{--text-md:1.15rem;--layout-reading:640px}
+  /* A very-wide-screen rule hard-codes 1180px and .98rem; keep the reading measure there too. */
+  body[data-screen="gameplay"] #content{width:min(100%,var(--layout-reading))}
+  body[data-screen="gameplay"] #content .passage p{font-size:var(--text-md)}
+}
 </style>
 </head>
 <body>
