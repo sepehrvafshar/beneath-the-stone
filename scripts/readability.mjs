@@ -13,7 +13,7 @@ import { pathToFileURL } from 'node:url';
 const file = process.argv[2];
 if (!file) { console.error('usage: node scripts/readability.mjs <index.html>'); process.exit(2); }
 const url = pathToFileURL(resolve(file)).href;
-const WIDTHS = [320, 390, 600, 768, 1024, 1440, 1920];
+const WIDTHS = [320, 390, 600, 768, 1024, 1440, 1920, 2560, 3840];
 const MAX_CHARS = 85;   // comfortable measure; 45-75 is ideal, 85 is the hard limit here
 const MIN_FONT = 13;    // px, smallest acceptable story text at the default setting
 

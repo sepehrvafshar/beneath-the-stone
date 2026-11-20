@@ -9,9 +9,10 @@
     "smoke": "node scripts/smoke.mjs index.html",
     "a11y": "node scripts/a11y.mjs index.html",
     "readability": "node scripts/readability.mjs index.html",
-    "test": "node scripts/check.mjs index.html && node scripts/smoke.mjs index.html && node scripts/readability.mjs index.html && node scripts/a11y.mjs index.html",
+    "test": "node scripts/check.mjs index.html && node scripts/smoke.mjs index.html && node scripts/readability.mjs index.html && node scripts/large-screens.mjs index.html && node scripts/a11y.mjs index.html",
     "snapshots": "node scripts/snapshots.mjs index.html review/snapshots",
-    "serve": "npx --yes serve -l 8080 ."
+    "serve": "npx --yes serve -l 8080 .",
+    "large-screens": "node scripts/large-screens.mjs index.html"
   },
   "devDependencies": {
     "axe-core": "^4.10.0",

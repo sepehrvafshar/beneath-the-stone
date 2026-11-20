@@ -33,6 +33,8 @@ jobs:
         run: npm run smoke
       - name: Reading size and layout
         run: npm run readability
+      - name: Large screens
+        run: npm run large-screens
       - name: Accessibility (axe-core)
         run: npm run a11y
       - name: Package
