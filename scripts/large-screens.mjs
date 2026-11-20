@@ -27,7 +27,9 @@ for (const [w, h] of [[2560, 1440], [3840, 2160], [1920, 1080], [2560, 1080]]) {
   await p.getByRole('button', { name: /begin journey/i }).click(); await p.getByRole('button', { name: 'New Game', exact: true }).click();
   await p.waitForFunction(() => currentNodeId === 'start' && !inputIsGuarded());
   // Pointer light follows the mouse in visual pixels.
-  await p.mouse.move(w * 0.3, h * 0.6, { steps: 4 }); await p.waitForTimeout(2200);
+  await p.mouse.move(w * 0.3, h * 0.6, { steps: 4 });
+  // The light eases toward the pointer each animation frame; slow machines need longer, so wait until it settles.
+  await p.waitForFunction(([tx, ty, z]) => { const cs = getComputedStyle(document.documentElement); return Math.abs(parseFloat(cs.getPropertyValue('--game-light-x')) * z - tx) < 6 && Math.abs(parseFloat(cs.getPropertyValue('--game-light-y')) * z - ty) < 6; }, [w * 0.3, h * 0.6, z], { timeout: 10000 }).catch(() => {});
   const light = await p.evaluate(() => { const cs = getComputedStyle(document.documentElement); return [parseFloat(cs.getPropertyValue('--game-light-x')), parseFloat(cs.getPropertyValue('--game-light-y'))]; });
   const vx = light[0] * z, vy = light[1] * z;
   if (Math.abs(vx - w * 0.3) < 12 && Math.abs(vy - h * 0.6) < 12) ok(`${w}x${h}: pointer light under the mouse`); else bad(`${w}x${h}: pointer light at ${vx.toFixed(0)},${vy.toFixed(0)} not ${w * 0.3},${h * 0.6}`);
