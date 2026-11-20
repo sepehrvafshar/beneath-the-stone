@@ -3372,7 +3372,7 @@ html[data-motion="reduced"] *::after {
     </g>
   </svg>
 </button>
-<div class="accessibility-controls" id="accessibilityControls" role="group" aria-label="Accessibility settings">
+<div class="accessibility-controls" id="accessibilityControls" role="region" aria-label="Accessibility settings">
   <button type="button" id="accessibilityToggle" aria-label="Accessibility settings" title="Accessibility settings" aria-expanded="false" aria-controls="accessibilityPanel">
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="16" cy="16" r="13"/>
@@ -3383,8 +3383,8 @@ html[data-motion="reduced"] *::after {
   <section class="accessibility-panel" id="accessibilityPanel" aria-labelledby="accessibilityTitle" hidden>
     <h2 id="accessibilityTitle">Accessibility</h2>
     <div class="accessibility-options">
-      <button type="button" id="textSizeControl" aria-label="Text size: default" title="Text size: default">Aa 1</button>
-      <button type="button" id="readingModeControl" aria-label="Reading mode" aria-pressed="false" title="Reading mode: standard">Read</button>
+      <button type="button" id="textSizeControl" aria-label="Aa 1, text size: default" title="Text size: default">Aa 1</button>
+      <button type="button" id="readingModeControl" aria-label="Read mode" aria-pressed="false" title="Reading mode: standard">Read</button>
       <button type="button" id="motionControl" aria-label="Reduce motion" aria-pressed="false" title="Reduce motion">Motion</button>
     </div>
   </section>
@@ -3395,11 +3395,11 @@ html[data-motion="reduced"] *::after {
   <div id="journalEntries"></div>
   <button class="journal-close continue-btn" id="journalClose" aria-label="Close research notebook">Close notebook</button>
 </div>
-<div id="game">
+<main id="game">
 
-  <h1 class="brand-heading"><button type="button" id="brandHome" aria-label="Beneath the Stone: return to the main page"><span>Beneath the Stone</span><span class="brand-subtitle">A Journey Through Mammoth Cave</span></button></h1>
+  <h1 class="brand-heading"><button type="button" id="brandHome" aria-label="Beneath the Stone, A Journey Through Mammoth Cave: return to the main page"><span>Beneath the Stone</span> <span class="brand-subtitle">A Journey Through Mammoth Cave</span></button></h1>
   <div id="content"></div>
-</div>
+</main>
 
 <script>
 // A disclosure keeps accessibility preferences available without crowding the header.
@@ -3444,7 +3444,7 @@ function setTextSize(step, persist = true) {
   const label = ['default', 'large', 'larger'][Number(value) - 1];
   const button = document.getElementById('textSizeControl');
   button.textContent = 'Aa ' + value;
-  button.setAttribute('aria-label', 'Text size: ' + label);
+  button.setAttribute('aria-label', 'Aa ' + value + ', text size: ' + label);
   button.title = 'Text size: ' + label;
   if (persist) saveAccessibilityPreference('text', value);
 }
@@ -5065,7 +5065,7 @@ function renderTitle(wrap) {
   wrap.appendChild(topbar);
   ensurePersistentSoundControl();
 
-  const card=document.createElement('main');card.className='title-card';card.setAttribute('aria-labelledby','heroTitle');
+  const card=document.createElement('section');card.className='title-card';card.setAttribute('aria-labelledby','heroTitle');
   const center=document.createElement('div');center.className='title-center';center.innerHTML=`
     <div class="title-eyebrow">Memory · Evidence · Stewardship</div>
     <svg class="title-mark" viewBox="0 0 160 110" aria-hidden="true">
@@ -5109,7 +5109,7 @@ function renderTitle(wrap) {
   });
   howToPlay.addEventListener('close',()=>howToPlayButton.focus({preventScroll:true}));
 
-  const advisory=document.createElement('footer');
+  const advisory=document.createElement('div');
   advisory.className='title-content-advisory';
   advisory.setAttribute('role','note');
   advisory.setAttribute('aria-label','Content advisory');
