@@ -3344,6 +3344,42 @@ body[data-screen="title"] .title-byline {
 body[data-screen="title"] .title-byline span { display:block; color:#a8977c; font-size:.68rem; letter-spacing:.04em; }
 @media (max-width:620px) { body[data-screen="title"] .title-byline { margin:.6rem auto 1.1rem; font-size:.7rem; } body[data-screen="title"] .title-byline span { font-size:.64rem; } }
 @media (forced-colors:active) { body[data-screen="title"] .title-byline, body[data-screen="title"] .title-byline span { color:CanvasText; } }
+
+/* ---------- v54: UI/UX review fixes ---------- */
+/* #1 The back button is fixed header chrome, not a flex item that pushes the card sideways. */
+body:not([data-screen="title"]) #backBtn{position:fixed!important;top:var(--header-edge,16px)!important;left:var(--header-edge,16px)!important;width:44px!important;height:44px!important;margin:0!important;z-index:1300!important}
+/* #2 Backdrop behind the fixed header buttons while scrolled. */
+body:not([data-screen="title"])::after{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--header-edge,16px) + 58px);z-index:1250;pointer-events:none;opacity:0;transition:opacity .25s ease;background:linear-gradient(180deg,rgba(6,7,8,.96) 0%,rgba(6,7,8,.86) 70%,rgba(6,7,8,0) 100%)}
+body.is-scrolled:not([data-screen="title"])::after{opacity:1}
+@media (forced-colors:active){body:not([data-screen="title"])::after{background:Canvas}}
+/* #4 Comfortable line length for story text on wide screens. */
+body[data-screen="gameplay"]{--layout-reading:700px}
+/* #3 Compact notifications on phones so they cover less of the story. */
+@media (max-width:620px){
+  .choice-memory-inner,.note-discovery-inner{padding:.62rem .9rem!important;border-radius:12px!important}
+  .choice-memory small{display:none!important}
+  .choice-memory,.note-discovery{bottom:max(.75rem,env(safe-area-inset-bottom))!important}
+  /* #14 Shorter header on phones. */
+  body:not([data-screen="title"]) #brandHome .brand-subtitle{display:none}
+}
+/* #5 Current age marker. */
+.progress span.current{font-weight:700}
+/* #6 Non-decision continue buttons read as secondary. */
+body #content .discovery-gate button,body #content .choices .is-continue{background:transparent!important;border-style:dashed!important;box-shadow:none!important}
+/* #7 Touch target for closing a historical note. */
+.exam-note-close{min-height:44px;min-width:44px;padding-inline:1rem}
+/* #8 Notebook icons. */
+.journal-section h3 .section-icon{display:inline-grid;place-items:center;width:1.15rem;height:1.15rem;margin-right:.45rem;vertical-align:-.15rem;filter:none}
+.journal-section h3 .section-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.journal-icon{color:var(--amber-bright,#e0a45c)}
+.era-dot{display:inline-block;width:.5rem;height:.5rem;margin-right:.4rem;border-radius:50%;background:#c6883f;vertical-align:.08rem}
+.era-dot.era-l1{background:#9fc0d8}.era-dot.era-l2{background:#e0a45c}.era-dot.era-l3{background:#a8b5a8}
+.entry-status{color:var(--amber-bright,#e0a45c);font-size:.9rem}
+@media (forced-colors:active){.era-dot{background:CanvasText!important}}
+/* #9 Credits names. */
+.credits-and{font-size:.6em;letter-spacing:.06em;opacity:.75}
+/* #12 Keep playing is the safe default in the exit dialog. */
+#cancelExit{border-color:#e0a45c;background:#211b14}
 </style>
 </head>
 <body>
@@ -4057,8 +4093,10 @@ function progressBar() {
   layers.forEach(l => {
     const s = document.createElement('span');
     const done = state.visited.includes(l.id);
-    s.textContent = l.label + (done ? ' ✔' : ' ○');
-    s.className = l.cls + (done ? ' done' : '');
+    const current = l.id !== 'reflection' && currentNodeId.startsWith(l.id.split('_')[0] + '_');
+    s.textContent = l.label + (current ? ' ●' : done ? ' ✔' : ' ○');
+    s.className = l.cls + (done ? ' done' : '') + (current ? ' current' : '');
+    if (current) s.setAttribute('aria-current', 'step');
     p.appendChild(s);
   });
   return p;
@@ -4154,8 +4192,8 @@ function showChoiceMemory(record, callback) {
     : "✦ Noted in your Research Notebook";
   memory.innerHTML = `<div class="choice-memory-inner"><strong>${heading}</strong><small>${choiceReflection(record)}</small></div>`;
   memory.classList.add('show');
-  const hideAfter = reducedMotion ? 80 : 1050;
-  const continueAfter = reducedMotion ? 90 : 1250;
+  const hideAfter = reducedMotion ? 80 : 900;
+  const continueAfter = reducedMotion ? 90 : 650;
   setTimeout(() => memory.classList.remove('show'), hideAfter);
   setTimeout(callback, continueAfter);
 }
@@ -4361,7 +4399,7 @@ function requestExitToTitle() {
   dialog.setAttribute('aria-modal','true');
   dialog.innerHTML = `<header class="how-to-play-header"><h2 id="exitSessionTitle" tabindex="-1">Return to the main page?</h2><button type="button" class="how-to-play-close" aria-label="Keep playing">×</button></header><div class="session-dialog-body"></div>`;
   const body = dialog.querySelector('.session-dialog-body');
-  body.innerHTML = `<p>Do you want to leave this session and return to the main page?</p><div class="session-actions"><button type="button" id="confirmExit">Return to title</button><button type="button" id="cancelExit">Keep playing</button></div>`;
+  body.innerHTML = `<p>Do you want to leave this session and return to the main page? You can save your progress on the next step.</p><div class="session-actions"><button type="button" id="confirmExit">Return to title</button><button type="button" id="cancelExit">Keep playing</button></div>`;
   const cancel = () => dialog.close();
   const exit = () => { dialog.close(); returnToMainPage(); };
   dialog.querySelector('.how-to-play-close').addEventListener('click',cancel);
@@ -4704,7 +4742,7 @@ function wireExaminables(scope) {
       note.className = 'exam-note';
       note.dataset.term = el.textContent.trim();
       note.setAttribute('role', 'note');
-      note.innerHTML = `<strong>Historical context</strong><div>${el.dataset.note || 'No additional context is available.'}</div><button type="button" class="exam-note-close" aria-label="Close historical context for ${el.textContent.trim()}">Close context</button>`;
+      note.innerHTML = `<strong>Historical context</strong><div>${el.dataset.note || 'No additional context is available.'}</div><button type="button" class="exam-note-close" aria-label="Close context: ${el.textContent.trim()}">Close context</button>`;
 
       const paragraph = el.closest('p');
       if (paragraph) paragraph.insertAdjacentElement('afterend', note);
@@ -4775,52 +4813,54 @@ const journalBackdrop = document.getElementById('journalBackdrop');
 const journalEntries = document.getElementById('journalEntries');
 const journalClose = document.getElementById('journalClose');
 
+const notebookIcons = {
+  notes: '<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 8C12 5 7 5 3.5 6.5v19C7 24 12 24 16 27c4-3 9-3 12.5-1.5v-19C25 5 20 5 16 8Zm0 0v19"/></svg>',
+  decisions: '<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M26 4C17 6 11 12 8 22l-2 6 6-2c10-3 16-9 18-18M10 22l9-9"/></svg>'
+};
+addEventListener('scroll', () => document.body.classList.toggle('is-scrolled', scrollY > 8), { passive: true });
 function refreshJournal() {
   journalEntries.innerHTML = '';
 
   const historySection = document.createElement('section');
   historySection.className = 'journal-section';
-  historySection.innerHTML = `<h3><span class="section-icon" aria-hidden="true">🗺️</span>Historical Notes</h3><div class="journal-count">${state.notes.length} of ${TOTAL_HISTORICAL_NOTES} encountered</div>`;
+  historySection.innerHTML = `<h3><span class="section-icon" aria-hidden="true">${notebookIcons.notes}</span>Historical Notes</h3><div class="journal-count">${state.notes.length} of ${TOTAL_HISTORICAL_NOTES} encountered</div>`;
   if (state.notes.length === 0) {
     const e = document.createElement('div');
     e.className = 'empty';
-    e.innerHTML = '<span class="empty-icon" aria-hidden="true">🔎</span>Select underlined terms in the story to collect historical context.';
+    e.textContent = 'Select underlined terms in the story to collect historical context.';
     historySection.appendChild(e);
   } else {
     state.notes.forEach(n => {
       const d = document.createElement('div');
       d.className = 'historical-entry';
-      d.innerHTML = `<div class="journal-row"><span class="journal-icon" aria-hidden="true">📜</span><div class="journal-row-content"><strong>${n.term}</strong><small>${n.note}</small></div></div>`;
+      d.innerHTML = `<div class="journal-row"><span class="journal-icon" aria-hidden="true">✦</span><div class="journal-row-content"><strong>${n.term}</strong><small>${n.note}</small></div></div>`;
       historySection.appendChild(d);
     });
     const remaining = Math.max(0, TOTAL_HISTORICAL_NOTES - state.notes.length);
     const hidden = document.createElement('div');
     hidden.className = 'unfound-note';
-    hidden.innerHTML = remaining === 1 ? '<span aria-hidden="true">🔍</span> One historical context remains unexplored.' : `<span aria-hidden="true">🔍</span> ${remaining} historical contexts remain unexplored.`;
+    hidden.textContent = remaining === 1 ? 'One historical context remains unexplored.' : `${remaining} historical contexts remain unexplored.`;
     historySection.appendChild(hidden);
   }
   journalEntries.appendChild(historySection);
 
   const decisionsSection = document.createElement('section');
   decisionsSection.className = 'journal-section';
-  decisionsSection.innerHTML = '<h3><span class="section-icon" aria-hidden="true">✍️</span>Personal Decisions</h3>';
+  decisionsSection.innerHTML = `<h3><span class="section-icon" aria-hidden="true">${notebookIcons.decisions}</span>Personal Decisions</h3>`;
   if (state.choices.length === 0) {
     const e = document.createElement('div');
     e.className = 'empty';
-    e.innerHTML = '<span class="empty-icon" aria-hidden="true">🕯️</span>Your decisions will appear here as you move through each age.';
+    e.textContent = 'Your decisions will appear here as you move through each age.';
     decisionsSection.appendChild(e);
   } else {
     state.choices.forEach(c => {
       const d = document.createElement('div');
       d.className = 'entry ' + (c.preserved ? 'preserved' : 'released');
       const dimension = decisionDimensions[c.dimension] || { label: 'Reflection' };
-      const dimensionIcons = { documentation: '🖋️', authority: '🗝️', access: '🚪', repair: '🧱', stewardship: '🕯️', reflection: '💭' };
-      const eraIcons = { 'Deep Past': '🔥', 'Lantern Age': '🏮', 'Present': '🧭' };
-      const dimensionIcon = dimensionIcons[c.dimension] || dimensionIcons.reflection;
-      const eraIcon = eraIcons[c.era] || '•';
-      const statusIcon = c.preserved ? '📖' : '🌑';
+      const eraClass = { 'Deep Past': 'era-l1', 'Lantern Age': 'era-l2', 'Present': 'era-l3' }[c.era] || '';
+      const statusIcon = c.preserved ? '✓' : '◇';
       const statusLabel = c.preserved ? 'Entered the record' : 'Held in restraint';
-      d.innerHTML = `<div class="decision-meta"><strong><span aria-hidden="true">${eraIcon}</span> ${c.era}</strong><span class="dimension-tag"><span class="tag-icon" aria-hidden="true">${dimensionIcon}</span>${dimension.label}</span><span class="entry-status" role="img" aria-label="${statusLabel}">${statusIcon}</span></div><span>${c.text}</span><small>${choiceReflection(c)}</small>`;
+      d.innerHTML = `<div class="decision-meta"><strong><span class="era-dot ${eraClass}" aria-hidden="true"></span>${c.era}</strong><span class="dimension-tag">${dimension.label}</span><span class="entry-status" role="img" aria-label="${statusLabel}">${statusIcon}</span></div><span>${c.text}</span><small>${choiceReflection(c)}</small>`;
       decisionsSection.appendChild(d);
     });
   }
@@ -5340,7 +5380,7 @@ function renderAbout(wrap) {
       </article>
       <article class="experience-item">
         <span class="experience-index">03</span>
-        <div><small>Your outcome</small><strong>Personal</strong><p>Your Journal remembers each decision and shapes the final reflection.</p></div>
+        <div><small>Your outcome</small><strong>Personal</strong><p>Your Research Notebook remembers each decision and shapes the final reflection.</p></div>
       </article>
     </section>
 
@@ -5437,14 +5477,14 @@ function renderCredits(wrap) {
         </svg>
       </div>
       <p class="credits-kicker">A Journey Through Mammoth Cave</p>
-      <h1 id="creditsTitle">BENEATH THE STONE</h1>
+      <h1 id="creditsTitle">BENEATH THE&nbsp;STONE</h1>
       <p class="credits-closing">Every decision leaves a trace.</p>
     </header>
 
     <div class="credits-grid">
       <section class="credits-card credits-primary">
         <p class="credits-label">Credits</p>
-        <h2>Sepehr Vaez Afshar</h2>
+        <h2>Sepehr Vaez Afshar <span class="credits-and">and</span> Laura Shackelford</h2>
         <p>Design and development: Sepehr Vaez Afshar. Research advisor: Laura Shackelford. University of Illinois Urbana-Champaign.</p>
         <p class="credits-label">Related publication</p>
         <p>Vaez Afshar, S., &amp; Shackelford, L. (2026). Beneath the Stone: A low-resource text-based design framework for ethical digital representation of marginalized heritage. Proceedings of SIGraDi 2026.</p>
@@ -5712,7 +5752,8 @@ function shortChoiceText(choice) {
     .replace(/^asked/i, 'Asked')
     .replace(/^argued/i, 'Argued')
     .replace(/^supported/i, 'Supported')
-    .replace(/^kept/i, 'Kept');
+    .replace(/^kept/i, 'Kept')
+    .replace(/^./, first => first.toUpperCase());
 }
 
 function buildJourneyCards() {
