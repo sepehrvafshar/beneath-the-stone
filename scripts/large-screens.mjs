@@ -39,7 +39,14 @@ for (const [w, h] of [[2560, 1440], [3840, 2160], [1920, 1080], [2560, 1080]]) {
   await p.waitForFunction(() => currentNodeId !== 'start', null, { timeout: 8000 }).then(() => ok(`${w}x${h}: mouse click on a choice navigates`)).catch(() => bad(`${w}x${h}: choice click missed`));
   await p.waitForFunction(() => !inputIsGuarded());
   // Notebook opens and fits.
-  await p.locator('#journalBtn').click(); await p.waitForTimeout(1600);
+  await p.locator('#journalBtn').click();
+  // Wait for the slide-in to finish: no running animations and a box that holds still, however slow the machine.
+  for (let i = 0, prev = null; i < 60; i++) {
+    await p.waitForTimeout(250);
+    const now = await p.evaluate(() => { const e = document.getElementById('journalPanel'), r = e.getBoundingClientRect(); return { x: r.x, w: r.width, run: e.getAnimations({ subtree: true }).some(a => a.playState === 'running') }; });
+    if (prev && !now.run && Math.abs(now.x - prev.x) < 0.5 && Math.abs(now.w - prev.w) < 0.5) break;
+    prev = now;
+  }
   const jb = await p.locator('#journalPanel').boundingBox();
   if (jb && jb.x + jb.width <= w + 1 && jb.height <= h + 1) ok(`${w}x${h}: notebook fits on screen`); else bad(`${w}x${h}: notebook off screen ${JSON.stringify(jb)}`);
   if (!errs.length) ok(`${w}x${h}: no page errors`); else bad(`${w}x${h}: ${errs[0]}`);
