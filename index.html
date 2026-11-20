@@ -3335,6 +3335,15 @@ html[data-motion="reduced"] *::after {
   transition:none!important;
   scroll-behavior:auto!important;
 }
+
+/* ---------- v53: visible title screen and author byline ---------- */
+body[data-screen="title"] .title-byline {
+  margin:.85rem auto 1.5rem; max-width:46rem;
+  color:#d0b78d; font:400 .74rem/1.6 var(--font-ui); letter-spacing:.02em;
+}
+body[data-screen="title"] .title-byline span { display:block; color:#a8977c; font-size:.68rem; letter-spacing:.04em; }
+@media (max-width:620px) { body[data-screen="title"] .title-byline { margin:.6rem auto 1.1rem; font-size:.7rem; } body[data-screen="title"] .title-byline span { font-size:.64rem; } }
+@media (forced-colors:active) { body[data-screen="title"] .title-byline, body[data-screen="title"] .title-byline span { color:CanvasText; } }
 </style>
 </head>
 <body>
@@ -5077,7 +5086,8 @@ function renderTitle(wrap) {
       <path d="M48 91h64" stroke="#6f5944" stroke-width="1"/><path d="M60 96h40" stroke="#4e4135" stroke-width="1"/>
     </svg>
     <h1 class="title-main" id="heroTitle">Beneath <span>the Stone</span></h1>
-    <p class="title-tagline">Walk through three ages of Mammoth Cave. Decide what enters the record—and what is allowed to remain unseen.</p>`;
+    <p class="title-tagline">Walk through three ages of Mammoth Cave. Decide what enters the record—and what is allowed to remain unseen.</p>
+    <p class="title-byline">A free, browser-based text game by Sepehr Vaez Afshar and Laura Shackelford <span>University of Illinois Urbana-Champaign</span></p>`;
   const menu=document.createElement('div');menu.className='title-menu';
   const begin=document.createElement('button');begin.className='menu-primary';begin.textContent='Begin Journey';begin.setAttribute('aria-haspopup','dialog');begin.setAttribute('aria-controls','journeyDialog');begin.addEventListener('click',()=>openJourneyDialog(begin,wrap));menu.appendChild(begin);
   const secondaryRow=document.createElement('div');secondaryRow.className='menu-secondary-row';
@@ -5116,9 +5126,8 @@ function renderTitle(wrap) {
   advisory.innerHTML=`<strong>Content Advisory:</strong> <span>This experience contains themes of Indigenous heritage, colonial history, archaeological remains, and ethical decision-making.</span> <span style="display:block">Places, artifacts, and documented practices are drawn from the historical and archaeological record; the people, dialogue, and specific events are imagined composites.</span> <em>Recommended Age: 18+</em>`;
   wrap.appendChild(advisory);
 
-  const hint=document.createElement('div');hint.className='title-discovery-hint';hint.textContent='Move through the dark. Let the cave reveal itself.';wrap.appendChild(hint);
-  const dismissHint=()=>hint.classList.add('used');
-  wrap.addEventListener('pointermove',dismissHint,{once:true,passive:true});
+  // Title text and buttons are visible from the start; the flashlight stays as ambience only.
+  wrap.querySelectorAll('.title-eyebrow,.title-mark,.title-main,.title-tagline,.title-menu button,.title-topbar > span').forEach(el=>el.classList.add('revealed'));
 
   const pointer=(e)=>{if(prefersReducedMotion()) return; const r=wrap.getBoundingClientRect();const x=((e.clientX-r.left)/r.width)*100,y=((e.clientY-r.top)/r.height)*100;wrap.style.setProperty('--mx',x+'%');wrap.style.setProperty('--my',y+'%');wrap.style.setProperty('--px',((x-50)/50*18)+'px');wrap.style.setProperty('--py',((y-50)/50*14)+'px')};
   wrap.addEventListener('pointermove',pointer,{passive:true});
