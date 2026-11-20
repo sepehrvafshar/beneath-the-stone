@@ -4,6 +4,7 @@ game/
 *.log
 .DS_Store
 dist/
+.wrangler/
 /0/
 /*.zip
 /review/*.zip

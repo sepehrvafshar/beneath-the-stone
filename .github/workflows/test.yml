@@ -1,0 +1,39 @@
+# Runs every check on each push and pull request.
+# Cloudflare deploys main separately; its build command (scripts/build.mjs)
+# also runs scripts/check.mjs and stops the deploy if that fails.
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Static checks
+        run: npm run check
+      - name: Play to all three endings
+        run: npm run smoke
+      - name: Reading size and layout
+        run: npm run readability
+      - name: Accessibility (axe-core)
+        run: npm run a11y
+      - name: Package
+        run: node scripts/build.mjs workers

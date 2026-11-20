@@ -4,8 +4,6 @@ A nonlinear, text-based browser game set across three ages of Mammoth Cave, Kent
 
 Play: https://bts.sepafshar.com
 
-Alternate address: https://beneath-the-stone.pages.dev
-
 Recommended age 18+. Themes include Indigenous heritage, slavery, archaeological remains, and ethical decision-making.
 
 ## About the project
@@ -27,11 +25,16 @@ Open `index.html` in any modern browser. No server or build step is needed.
 Developer checks (optional):
 
 ```
-npm install
+npm ci
 npx playwright install chromium
-npm run check      # static checks against the paper's claims
-npm run smoke      # plays to all three endings, verifies zero network requests
+npm run check        # static checks against the paper's claims
+npm run smoke        # plays to all three endings, verifies zero network requests
+npm run readability  # font size, line length, centering, overflow from 320 to 1920 px
+npm run a11y         # axe-core audit of every screen; fails on console errors too
+npm test             # all of the above
 ```
+
+GitHub Actions runs `npm test` on every push and pull request. Automated accessibility checks do not replace testing with a screen reader.
 
 ## Accessibility
 
@@ -47,7 +50,7 @@ Main address: https://bts.sepafshar.com/
 
 Source: https://github.com/sepehrvafshar/beneath-the-stone
 
-Cloudflare Workers deploys `main` with build command `node scripts/build.mjs workers` and deploy command `npx wrangler deploy --config wrangler.workers.json`. Static files are packaged into `dist` without transforming the game. The hosting-only `worker.mjs` permanently redirects the original workers.dev hostname to the custom domain and passes other requests to static assets.
+Cloudflare Workers deploys `main` with build command `node scripts/build.mjs workers` and deploy command `npx wrangler deploy --config wrangler.workers.json`. The build runs `scripts/check.mjs` first and stops if it fails, so a failing build is never deployed. Static files are packaged into `dist` without transforming the game. The hosting-only `worker.mjs` redirects http to https and every workers.dev address to the custom domain, gzips text responses (the `no-transform` header blocks Cloudflare's own compression), serves a small 404 page, and passes other requests to static assets.
 
 The legacy Cloudflare Pages project deploys the same branch with build command `node scripts/build.mjs pages` and output directory `dist`. Its `_redirects` file permanently sends requests to the custom domain. Keep Web Analytics disabled.
 
