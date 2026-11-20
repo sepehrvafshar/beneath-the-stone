@@ -1,6 +1,8 @@
 // Hosting-only logic. The game itself remains a self-contained static file.
 const CANONICAL_HOST = 'bts.sepafshar.com';
-const LEGACY_HOST = 'beneath-the-stone.sepehr-vaezafshar.workers.dev';
+// Any workers.dev address (the account subdomain has changed before) is a legacy
+// alias of the custom domain.
+const isLegacyHost = (hostname) => hostname.endsWith('.workers.dev');
 // Text responses worth compressing. _headers sets Cache-Control no-transform so
 // Cloudflare never rewrites the page; that also stops its edge compression, so
 // the Worker compresses these responses itself.
@@ -48,9 +50,10 @@ function maybeCompress(request, response) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname === LEGACY_HOST || url.protocol === 'http:') {
+    const legacy = isLegacyHost(url.hostname);
+    if (legacy || url.protocol === 'http:') {
       url.protocol = 'https:';
-      if (url.hostname === LEGACY_HOST) url.hostname = CANONICAL_HOST;
+      if (legacy) url.hostname = CANONICAL_HOST;
       url.port = '';
       if (url.pathname === '/index.html') url.pathname = '/';
       return Response.redirect(url.href, 301);
