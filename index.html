@@ -15,6 +15,7 @@
 <meta name="theme-color" content="#07090a">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%2307090a%22%2F%3E%3Cpath%20d%3D%22M12%2050C17%2018%2047%2018%2052%2050M22%2050C25%2030%2039%2030%2042%2050M10%2050h44%22%20fill%3D%22none%22%20stroke%3D%22%23c17f3a%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <style>
+/* ===== stylesheet 1 of 16 ===== */
 /* Embedded Latin fonts. Copyright notices and license:
 Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)
 
@@ -1646,14 +1647,12 @@ html[data-reading="plain"] #visitIntro :is(h2,p) { font-family:Inter,sans-serif;
   #visitIntro .visit-intro-skip:focus-visible { outline-color:Highlight; }
 }
 
-</style>
-<style>
+/* ===== stylesheet 2 of 16 ===== */
 body{font-family:'Source Serif 4',serif;}
 button,.btn,.progress,nav{font-family:'Inter',sans-serif;}
 h1,h2,h3,.title{font-family:'Cormorant Garamond',serif;letter-spacing:.02em;}
-</style>
 
-<style>
+/* ===== stylesheet 3 of 16 ===== */
 /* v25 — game typography, discovery cue, and guaranteed disclaimer visibility */
 :root{
   --font-display:'Cinzel', Georgia, serif;
@@ -1671,17 +1670,14 @@ h1,h2,h3,.title,.title-main{font-family:var(--font-display);}
 .title-menu button{font-weight:600;letter-spacing:.16em;}
 .title-eyebrow{font-weight:600;letter-spacing:.29em;}
 @keyframes discoveryHint{0%,100%{opacity:.56}50%{opacity:1}}
-</style>
 
-
-<style>
+/* ===== stylesheet 4 of 16 ===== */
 /* v26 — persistent audio control */
 .global-sound-control{position:fixed!important;top:1rem!important;right:1rem!important;z-index:120!important;display:grid!important;opacity:1!important;visibility:visible!important;filter:none!important;transform:none!important;}
 body[data-screen="title"] .title-topbar{padding-right:5.4rem;}
 @media(max-width:620px){.global-sound-control{top:.75rem!important;right:.75rem!important;width:44px!important;height:44px!important}.title-topbar{padding-right:4.8rem!important}}
-</style>
 
-<style>
+/* ===== stylesheet 5 of 16 ===== */
 /* v27 — aligned controls, unified journal, smoother motion */
 :root{--ease-game:cubic-bezier(.22,1,.36,1);--ease-soft:cubic-bezier(.16,1,.3,1)}
 
@@ -1806,10 +1802,8 @@ button,.continue-btn,.back-btn{
 @media(prefers-reduced-motion:reduce){
 html:not([data-motion="full"]) .journal-panel, html:not([data-motion="full"]) #journalEntries, html:not([data-motion="full"]) .journal-btn, html:not([data-motion="full"]) .journal-btn svg, html:not([data-motion="full"]) .title-menu button, html:not([data-motion="full"]) button { transition-duration: 0.01ms !important; }
 }
-</style>
 
-
-<style>
+/* ===== stylesheet 6 of 16 ===== */
 /* v30 — revised phase atmospheres and true title-mark discovery */
 body::before{
   opacity:0!important;
@@ -1876,9 +1870,8 @@ body:not([data-screen="title"]) #content>.passage::after{
   .title-mark{opacity:.24!important;filter:brightness(.48) saturate(.7)!important}
   .title-mark.revealed{opacity:1!important;filter:brightness(1) saturate(1) drop-shadow(0 0 22px rgba(226,174,103,.28))!important}
 }
-</style>
 
-<style>
+/* ===== stylesheet 7 of 16 ===== */
 /* v33 — phase backgrounds rendered above the opaque body canvas */
 body{position:relative;isolation:isolate;overflow-x:hidden}
 body::before{z-index:0!important}
@@ -1972,9 +1965,8 @@ body[data-era="L3"]::before{
 html:not([data-motion="full"]) .credits-shell, html:not([data-motion="full"]) .credits-card, html:not([data-motion="full"]) .disclaimer-body { animation: auto ease 0s 1 normal none running none; }
 html:not([data-motion="full"]) .credits-return, html:not([data-motion="full"]) .disclaimer-icon { transition: none; }
 }
-</style>
 
-<style>
+/* ===== stylesheet 8 of 16 ===== */
 /* v36 — unified About + Credits information screens */
 body[data-screen="about"],body[data-screen="credits"]{background:#070909;display:block;overflow-x:hidden}
 body[data-screen="about"] #game,body[data-screen="credits"] #game{max-width:none;width:100%;padding:0}
@@ -2149,10 +2141,7 @@ html:not([data-motion="full"]) #gameFlashlight { display: none; }
 html:not([data-motion="full"]) body[data-era] #content > .passage, html:not([data-motion="full"]) body[data-era] .artifact, html:not([data-motion="full"]) body[data-era] .discovery-gate, html:not([data-motion="full"]) body[data-era] .choices button, html:not([data-motion="full"]) body[data-era] .continue-btn { transition: none !important; transform: none !important; }
 }
 
-</style>
-
-
-<style>
+/* ===== stylesheet 9 of 16 ===== */
 /* v41 — unified gameplay controls, notebook feedback, and fixed HUD */
 body[data-screen="gameplay"] .global-sound-control,body[data-screen="reflection"] .global-sound-control{position:fixed!important;top:1rem!important;right:1rem!important;z-index:1200!important}
 body[data-screen="gameplay"] .journal-btn,body[data-screen="reflection"] .journal-btn{position:fixed!important;top:4.85rem!important;right:1rem!important;left:auto!important;margin:0!important;z-index:1199!important;transform-origin:center!important}
@@ -2174,10 +2163,8 @@ body[data-screen="gameplay"] .choices button:hover,body[data-screen="gameplay"] 
 .choice-memory small,.note-discovery small{display:block!important;margin-top:.2rem!important;color:#bcae9a!important;font-style:normal!important;line-height:1.55!important}
 @media(max-width:620px){body[data-screen="gameplay"] .global-sound-control,body[data-screen="reflection"] .global-sound-control{top:.75rem!important;right:.75rem!important}body[data-screen="gameplay"] .journal-btn,body[data-screen="reflection"] .journal-btn{top:4.45rem!important;right:.75rem!important}body[data-screen="gameplay"] .choices button,body[data-screen="gameplay"] .continue-btn{min-height:58px!important;padding:.9rem 1rem!important}}
 @media(hover:none),(pointer:coarse){body[data-screen="gameplay"] #content>.passage:hover,body[data-screen="gameplay"] .choices button:hover,body[data-screen="gameplay"] .continue-btn:hover{transform:none!important}}
-</style>
 
-<style>
-
+/* ===== stylesheet 10 of 16 ===== */
 /* =========================================================
    v42 — ONE gameplay component system (final override)
    ========================================================= */
@@ -2344,9 +2331,8 @@ body[data-screen="reflection"] .journal-btn{position:fixed!important;top:4.85rem
 @media(prefers-reduced-motion:reduce){
 html:not([data-motion="full"]) body[data-screen="gameplay"] #content > .gameplay-passage, html:not([data-motion="full"]) body[data-screen="gameplay"] button.game-choice, html:not([data-motion="full"]) .choice-memory, html:not([data-motion="full"]) .note-discovery { transition: none !important; }
 }
-</style>
 
-<style>
+/* ===== stylesheet 11 of 16 ===== */
 /* v43 — smoother hover and pointer response across every gameplay page */
 body[data-screen="gameplay"] #content>.gameplay-passage{
   transition:transform .9s cubic-bezier(.22,1,.36,1),border-color .7s ease,box-shadow .9s cubic-bezier(.22,1,.36,1)!important;
@@ -2383,9 +2369,8 @@ body[data-screen="gameplay"] .artifact:hover,
 body[data-screen="gameplay"] .discovery-gate:hover{
   transform:translateY(-2px)!important;
 }
-</style>
 
-<style>
+/* ===== stylesheet 12 of 16 ===== */
 /* v44 — deliberately simple, quiet choice hover */
 body[data-screen="gameplay"] button.game-choice,
 body[data-screen="gameplay"] .discovery-gate button {
@@ -2433,9 +2418,8 @@ body[data-screen="gameplay"] .discovery-gate button:active {
     box-shadow:0 10px 24px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.025)!important;
   }
 }
-</style>
 
-<style>
+/* ===== stylesheet 13 of 16 ===== */
 /* v49 — content advisory as a compact title-screen footer */
 body[data-screen="title"] .title-content-advisory{
   position:fixed;
@@ -2476,9 +2460,8 @@ body[data-screen="title"] .title-content-advisory em{
   body[data-screen="title"] .title-content-advisory em{display:block;}
   body[data-screen="title"] .title-content-advisory em{margin:.08rem 0 0;}
 }
-</style>
 
-<style>
+/* ===== stylesheet 14 of 16 ===== */
 /* v50 — rebalance title-screen composition */
 @media (min-width: 621px) {
   body[data-screen="title"] .title-card {
@@ -2672,8 +2655,7 @@ button { padding:.68rem .95rem .68rem 1.15rem; line-height:1.35; border-radius:9
   .title-tagline { margin:.45rem 0 .8rem; }
 }
 
-</style>
-<style>
+/* ===== stylesheet 15 of 16 ===== */
 .passage-heading { scroll-margin-top:8rem; }
 .passage-heading:focus:not(:focus-visible) { outline:none; }
 .passage-heading:focus-visible { outline:3px solid #e0a45c; outline-offset:6px; }
@@ -2712,8 +2694,8 @@ body > button:focus-visible {
   outline-offset: 3px !important;
   box-shadow: 0 0 0 6px #101010 !important;
 }
-</style>
-<style id="accessibilityStyles">
+
+/* ===== stylesheet 16 of 16 ===== */
 /* Session-only text scaling uses rem-based type throughout the game. */
 :root { --text-scale:1; --header-edge:16px; }
 html[data-text="2"] { --text-scale:1.15; }
