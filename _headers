@@ -5,3 +5,4 @@
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Cache-Control: public, max-age=600, no-transform
+  Strict-Transport-Security: max-age=31536000
