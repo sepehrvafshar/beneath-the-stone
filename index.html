@@ -284,22 +284,6 @@ html:not([data-motion="full"]) .era-art .flame { animation: auto ease 0s 1 norma
   }
 
   /* typographic monogram — the game's wordmark */
-  .lamp {
-    text-align: center;
-    font-size: 1.05rem;
-    color: var(--amber-bright);
-    animation: flicker 4.5s infinite;
-    margin-bottom: 0.6rem;
-    letter-spacing: 0.6em;
-    font-family: Georgia, serif;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  .lamp .sep {
-    color: var(--stone);
-    font-weight: normal;
-    padding: 0 0.15em;
-  }
   @keyframes flicker {
     0%, 100% { opacity: 1; text-shadow: 0 0 18px rgba(224,164,92,0.7); }
     45% { opacity: 0.82; text-shadow: 0 0 10px rgba(224,164,92,0.4); }
@@ -307,7 +291,6 @@ html:not([data-motion="full"]) .era-art .flame { animation: auto ease 0s 1 norma
     60% { opacity: 0.85; text-shadow: 0 0 12px rgba(224,164,92,0.5); }
   }
   @media (prefers-reduced-motion: reduce) {
-html:not([data-motion="full"]) .lamp { animation: auto ease 0s 1 normal none running none; }
 html:not([data-motion="full"]) .passage { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
 }
 
@@ -386,10 +369,6 @@ html:not([data-motion="full"]) .passage { animation: auto ease 0s 1 normal none 
     letter-spacing: 0.3em;
     animation: emerge 2.2s ease;
   }
-  body[data-screen="title"] .lamp {
-    font-size: 1.3rem;
-    animation: flicker 4.5s infinite, emerge 2.2s ease;
-  }
   @keyframes emerge {
     0% { opacity: 0; letter-spacing: 0.55em; filter: blur(3px); }
     100% { opacity: 1; filter: blur(0); }
@@ -414,21 +393,10 @@ html:not([data-motion="full"]) .passage { animation: auto ease 0s 1 normal none 
   }
 
   /* 5 — reflection consequences surface one by one */
-  .passage .tally { opacity: 0; animation: fadeIn 0.7s ease forwards; }
-  .passage .tally:nth-of-type(1) { animation-delay: 0.4s; }
-  .passage .tally:nth-of-type(2) { animation-delay: 1.2s; }
-  .tally li { opacity: 0; animation: fadeIn 0.6s ease forwards; }
-  .tally li:nth-child(1) { animation-delay: 0.15s; }
-  .tally li:nth-child(2) { animation-delay: 0.45s; }
-  .tally li:nth-child(3) { animation-delay: 0.75s; }
-  .tally li:nth-child(4) { animation-delay: 1.05s; }
-  .tally li:nth-child(5) { animation-delay: 1.35s; }
-  .reflection-question { opacity: 0; animation: fadeIn 0.9s ease forwards; animation-delay: 2s; }
 
   @media (prefers-reduced-motion: reduce) {
-html:not([data-motion="full"]) .passage p, html:not([data-motion="full"]) .passage .artifact, html:not([data-motion="full"]) .passage .choices, html:not([data-motion="full"]) .passage .tally, html:not([data-motion="full"]) .tally li, html:not([data-motion="full"]) .reflection-question { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
-html:not([data-motion="full"]) body[data-screen="title"] h1, html:not([data-motion="full"]) body[data-screen="title"] .lamp { animation: auto ease 0s 1 normal none running none; }
-html:not([data-motion="full"]) .dimmer.pulse { animation: auto ease 0s 1 normal none running none; }
+html:not([data-motion="full"]) .passage p,html:not([data-motion="full"]) .passage .artifact,html:not([data-motion="full"]) .passage .choices { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
+html:not([data-motion="full"]) body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
 }
 
   /* decision weight — brief dim between major choices */
@@ -455,8 +423,8 @@ html:not([data-motion="full"]) .dimmer.pulse { animation: auto ease 0s 1 normal 
   #game { position: relative; z-index: 1; }
 
   @media (prefers-reduced-motion: reduce) {
-html:not([data-motion="full"]) .lamp, html:not([data-motion="full"]) body[data-screen="title"] .lamp, html:not([data-motion="full"]) body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
-html:not([data-motion="full"]) .passage, html:not([data-motion="full"]) .passage p, html:not([data-motion="full"]) .passage .artifact, html:not([data-motion="full"]) .tally li { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
+html:not([data-motion="full"]) body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
+html:not([data-motion="full"]) .passage,html:not([data-motion="full"]) .passage p,html:not([data-motion="full"]) .passage .artifact { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
 html:not([data-motion="full"]) #fadeOverlay { display: none; }
 }
 
@@ -757,45 +725,6 @@ html:not([data-motion="full"]) #fadeOverlay { display: none; }
   }
 
   /* Reflection screen */
-  .tally {
-    margin: 1.8rem 0;
-    border: 1px solid rgba(193,127,58,0.3);
-    border-radius: 2px;
-    padding: 1.4rem 1.5rem;
-  }
-  .tally h3 {
-    color: var(--amber);
-    font-size: 0.8rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    font-weight: normal;
-    margin-bottom: 0.9rem;
-  }
-  .tally ul { list-style: none; }
-  .tally li {
-    margin-bottom: 0.7rem;
-    padding-left: 1.3rem;
-    position: relative;
-    font-size: 0.95rem;
-  }
-  .tally li::before {
-    content: "◆";
-    position: absolute;
-    left: 0;
-    color: var(--amber);
-    font-size: 0.7rem;
-    top: 0.35rem;
-  }
-  .tally li.lost { color: var(--dim); }
-  .tally li.lost::before { content: "◇"; color: var(--stone); }
-
-  .reflection-question {
-    font-style: italic;
-    color: var(--parchment);
-    text-align: center;
-    margin: 2.2rem 0 1rem;
-    font-size: 1.05rem;
-  }
 
   .footer-note {
     margin-top: 3rem;
@@ -855,39 +784,6 @@ html:not([data-motion="full"]) #fadeOverlay { display: none; }
     animation: passageIn 0.7s ease both;
   }
 
-  .journey-timeline { margin: 1.4rem 0 2.4rem; }
-  .journey-timeline h2 {
-    text-align:center;
-    font-size:0.78rem;
-    font-weight:normal;
-    letter-spacing:0.28em;
-    text-transform:uppercase;
-    color:var(--amber);
-    margin-bottom:1.4rem;
-  }
-  .timeline-era {
-    position:relative;
-    padding: 0 0 1.6rem 2rem;
-    margin-left:0.4rem;
-    border-left:1px solid rgba(193,127,58,0.38);
-  }
-  .timeline-era:last-child { border-left-color:transparent; padding-bottom:0; }
-  .timeline-era::before {
-    content:''; position:absolute; left:-0.36rem; top:0.35rem; width:0.65rem; height:0.65rem;
-    border-radius:50%; background:var(--cave-deep); border:2px solid var(--amber);
-  }
-  .timeline-era h3 { font-size:0.92rem; color:var(--parchment); margin-bottom:0.45rem; }
-  .timeline-era ul { list-style:none; }
-  .timeline-era li { color:var(--dim); font-size:0.88rem; margin:0.32rem 0; line-height:1.5; }
-  .timeline-era li.recorded::before { content:'✓'; color:var(--amber-bright); margin-right:0.55rem; }
-  .timeline-era li.withheld::before { content:'✦'; color:var(--stone); margin-right:0.55rem; }
-  .timeline-bridge {
-    text-align:center; margin:1.8rem 0 1.6rem; color:var(--parchment); font-style:italic;
-  }
-  .what-remains-label {
-    text-align:center; color:var(--dim); font-style:italic; letter-spacing:0.12em; margin-bottom:0.8rem;
-  }
-
   /* Gamified discovery without scores or badges */
   .discovery-gate {
     margin-top: 2rem;
@@ -944,9 +840,7 @@ html:not([data-motion="full"]) #fadeOverlay { display: none; }
   .unfound-note { padding:.5rem .15rem; border-bottom:1px dotted rgba(91,63,36,.2); color:#8b7a67; font-style:italic; }
   .decision-meta { display:flex; align-items:center; gap:.45rem; margin-bottom:.28rem; }
   .dimension-tag { display:inline-flex; align-items:center; gap:.22rem; padding:.12rem .42rem; border:1px solid rgba(91,63,36,.35); border-radius:999px; font-family:Inter, sans-serif; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:#62472f; background:rgba(255,250,238,.35); }
-  .dimension-tag .tag-icon { font-size:.78rem; line-height:1; letter-spacing:0; }
   .entry-status { margin-left:auto; font-size:.9rem; line-height:1; opacity:.72; }
-  .empty .empty-icon { display:inline-block; margin-right:.3rem; font-style:normal; }
 
   @media (prefers-reduced-motion: reduce) {
 html:not([data-motion="full"]) .choices.revealed, html:not([data-motion="full"]) .note-discovery, html:not([data-motion="full"]) .quiet-moment { transition: none; animation: auto ease 0s 1 normal none running none; }
@@ -1041,45 +935,6 @@ body[data-screen="title"] .back-btn { display: none; }
   background:
     radial-gradient(circle at 48% 47%, rgba(219,162,91,.12), transparent 22%),
     linear-gradient(180deg, #0d1113 0%, #080a0b 48%, #040505 100%);
-}
-.title-cave-art,
-.title-cave-art::before,
-.title-cave-art::after { position: absolute; inset: 0; }
-.title-cave-art {
-  z-index: -5;
-  transform: scale(1.07);
-  animation: caveDrift 18s ease-in-out infinite alternate;
-}
-.title-cave-art svg { width: 100%; height: 100%; display: block; }
-.title-cave-art::before {
-  content: '';
-  z-index: 2;
-  background:
-    radial-gradient(ellipse at 52% 49%, transparent 0 13%, rgba(2,3,3,.10) 23%, rgba(2,3,3,.82) 68%, #020303 100%),
-    linear-gradient(180deg, rgba(2,3,3,.1), rgba(2,3,3,.5));
-}
-.title-cave-art::after {
-  content: '';
-  z-index: 3;
-  opacity: .34;
-  background-image: radial-gradient(rgba(245,224,186,.34) .55px, transparent .75px);
-  background-size: 9px 9px;
-  mix-blend-mode: soft-light;
-}
-.title-light-beam {
-  position: absolute;
-  z-index: -3;
-  left: 50%;
-  top: 42%;
-  width: min(44vw, 620px);
-  height: min(70vh, 760px);
-  transform: translate(-50%, -50%) perspective(600px) rotateX(66deg);
-  transform-origin: center bottom;
-  background: linear-gradient(180deg, rgba(244,196,126,.30), rgba(213,139,62,.05) 72%, transparent);
-  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
-  filter: blur(16px);
-  opacity: .62;
-  animation: beamBreathe 5.5s ease-in-out infinite;
 }
 .title-mist {
   position: absolute;
@@ -1188,7 +1043,7 @@ body[data-screen="title"] .back-btn { display: none; }
 
 }
 @media (prefers-reduced-motion:reduce){
-html:not([data-motion="full"]) .title-cave-art, html:not([data-motion="full"]) .title-light-beam, html:not([data-motion="full"]) .title-mist, html:not([data-motion="full"]) .title-particles i, html:not([data-motion="full"]) .title-card, html:not([data-motion="full"]) .title-mark{ animation: auto ease 0s 1 normal none running none !important; }
+html:not([data-motion="full"]) .title-mist,html:not([data-motion="full"]) .title-particles i,html:not([data-motion="full"]) .title-card,html:not([data-motion="full"]) .title-mark{ animation: auto ease 0s 1 normal none running none !important; }
 }
 
 /* v20 — conceptual title refinement */
@@ -1197,14 +1052,6 @@ html:not([data-motion="full"]) .title-cave-art, html:not([data-motion="full"]) .
     radial-gradient(circle at 50% 44%, rgba(205,146,74,.10), transparent 26%),
     linear-gradient(180deg,#080a0b 0%,#0b0d0d 50%,#050606 100%);
 }
-.title-cave-art { animation: memoryDrift 20s ease-in-out infinite alternate; }
-.title-cave-art::before {
-  background:
-    radial-gradient(ellipse at 50% 48%, transparent 0 20%, rgba(3,4,4,.18) 42%, rgba(3,4,4,.76) 78%, #030404 100%),
-    linear-gradient(180deg,rgba(2,3,3,.15),rgba(2,3,3,.7));
-}
-.title-cave-art::after { opacity:.18; background-size:12px 12px; }
-.title-light-beam { display:none; }
 .title-mist { opacity:.12; bottom:3vh; }
 .title-card { padding:8.5rem 2rem 2.5rem; }
 .title-eyebrow {
@@ -1585,13 +1432,7 @@ button {
 }
 
 /* Full-width capable content structures */
-.reflection-shell,
-.journey-timeline,
-.decision-review,
-.path-card,
-.tally,
-.discovery-gate,
-.ending-sequence {
+.reflection-shell,.decision-review,.path-card,.discovery-gate,.ending-sequence {
   width: 100%;
   min-width: 0;
 }
@@ -1653,12 +1494,7 @@ body[data-screen="title"] #content > .passage,
 }
 
 /* About / credits / modal-like screens */
-.about-shell,
-.credits-shell,
-.about-card,
-.credits-card,
-.info-card,
-.modal-card {
+.about-shell,.credits-shell,.credits-card {
   width: min(100%, var(--layout-reading));
   margin-inline: auto;
   min-width: 0;
@@ -1813,8 +1649,8 @@ html[data-reading="plain"] #visitIntro :is(h2,p) { font-family:Inter,sans-serif;
 </style>
 <style>
 body{font-family:'Source Serif 4',serif;}
-button,.btn,.timeline,.progress,.ui,.badge,nav{font-family:'Inter',sans-serif;}
-h1,h2,h3,.title,.hero-title{font-family:'Cormorant Garamond',serif;letter-spacing:.02em;}
+button,.btn,.progress,nav{font-family:'Inter',sans-serif;}
+h1,h2,h3,.title{font-family:'Cormorant Garamond',serif;letter-spacing:.02em;}
 </style>
 
 <style>
@@ -1826,53 +1662,15 @@ h1,h2,h3,.title,.hero-title{font-family:'Cormorant Garamond',serif;letter-spacin
   --font-accent:'Marcellus', Georgia, serif;
 }
 body{font-family:var(--font-narrative);}
-button,.btn,.timeline,.progress,.ui,.badge,nav{font-family:var(--font-ui);}
-h1,h2,h3,.title,.hero-title,.title-main{font-family:var(--font-display);}
-.title-eyebrow,.title-topbar,.title-menu button,.title-discovery-hint{font-family:var(--font-ui);}
+button,.btn,.progress,nav{font-family:var(--font-ui);}
+h1,h2,h3,.title,.title-main{font-family:var(--font-display);}
+.title-eyebrow,.title-topbar,.title-menu button{font-family:var(--font-ui);}
 .title-tagline{font-family:var(--font-accent);font-size:clamp(1rem,2vw,1.16rem);line-height:1.55;letter-spacing:.025em;}
 .title-main{font-weight:600;letter-spacing:.075em;}
 .title-main span{font-family:var(--font-accent);font-weight:400;font-style:normal;letter-spacing:.035em;}
 .title-menu button{font-weight:600;letter-spacing:.16em;}
 .title-eyebrow{font-weight:600;letter-spacing:.29em;}
-
-.title-discovery-hint{
-  position:absolute;
-  left:50%;
-  bottom:5.15rem;
-  z-index:20;
-  transform:translateX(-50%);
-  width:max-content;
-  max-width:calc(100% - 2rem);
-  padding:.52rem .85rem;
-  border:1px solid rgba(226,183,119,.24);
-  border-radius:999px;
-  color:rgba(244,228,201,.82);
-  background:rgba(0,0,0,.48);
-  box-shadow:0 8px 28px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.04);
-  backdrop-filter:blur(8px);
-  text-align:center;
-  font-size:.69rem;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  pointer-events:none;
-  animation:discoveryHint 2.5s ease-in-out infinite;
-}
-.title-discovery-hint::before{
-  content:'✦';
-  margin-right:.55rem;
-  color:#e1aa62;
-  text-shadow:0 0 14px rgba(225,170,98,.8);
-}
-.title-discovery-hint.used{opacity:0;transform:translate(-50%,8px);transition:opacity .6s ease,transform .6s ease;}
 @keyframes discoveryHint{0%,100%{opacity:.56}50%{opacity:1}}
-
-@media(max-width:620px){
-  .title-discovery-hint{bottom:5.7rem;font-size:.6rem;letter-spacing:.08em;white-space:normal;width:calc(100% - 2rem);}
-
-}
-@media(prefers-reduced-motion:reduce){
-html:not([data-motion="full"]) .title-discovery-hint { animation: auto ease 0s 1 normal none running none; }
-}
 </style>
 
 
@@ -1995,7 +1793,7 @@ body[data-screen="title"] .title-topbar{padding-right:5.4rem;}
 .title-menu .menu-secondary:hover,.title-menu .menu-secondary:focus-visible{transform:translateY(-2px) scale(1.008)!important}
 
 /* Smooth common game controls without making navigation feel sluggish. */
-button,.choice-btn,.continue-btn,.back-btn{
+button,.continue-btn,.back-btn{
   transition-property:transform,background-color,background-position,border-color,color,box-shadow,opacity,filter!important;
   transition-duration:.48s!important;
   transition-timing-function:var(--ease-game)!important;
@@ -2826,20 +2624,16 @@ button { padding:.68rem .95rem .68rem 1.15rem; line-height:1.35; border-radius:9
 .decision-review summary { padding:.72rem .85rem; }
 .decision-review-content { padding:0 .8rem .8rem; gap:.55rem; }
 .reflection-finale { padding:1rem .7rem .3rem; }
-.tally { margin:1rem 0; padding:.9rem 1rem; }
-.tally li { margin-bottom:.4rem; }
 .discovery-gate { margin-top:1rem; padding:.85rem; }
 .ending-sequence { min-height:120px; }
-.journey-timeline { margin: .8rem 0 1.3rem; }
-.timeline-era { padding-bottom:.9rem; }
 .footer-note { margin-top:1.5rem; padding-top:.8rem; }
 
 /* Wider page-specific shells. */
-.about-shell,.credits-shell,.about-card,.credits-card,.info-card,.modal-card {
+.about-shell,.credits-shell,.credits-card {
   width:min(100%,1120px);
 }
 @media (min-width: 1000px) {
-  .about-grid,.credits-grid,.info-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .credits-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 
 /* Title remains immersive but fits common laptop heights. */
@@ -3035,7 +2829,6 @@ body[data-screen="title"] .title-hero:has(.how-to-play) .title-center { min-heig
 body[data-screen="title"] .title-hero:has(.how-to-play) .title-content-advisory {
   position:relative; left:auto; bottom:auto; transform:none; padding:1rem; box-sizing:border-box;
 }
-body[data-screen="title"] .title-hero:has(.how-to-play) .title-discovery-hint { position:relative; left:auto; bottom:auto; transform:none; }
 
 /* Session navigation shares the existing glass surface and keyboard focus style. */
 #game #brandHome {
@@ -3112,7 +2905,6 @@ html[data-motion="reduced"] :is(.session-actions button,.how-to-play-close)::bef
     width:100%; padding:1rem; box-sizing:border-box;
   }
   body[data-screen="title"] .title-card { padding-bottom:1.5rem; }
-  body[data-screen="title"] .title-discovery-hint { position:relative; left:auto; bottom:auto; transform:none; }
 }
 
 html[data-reading="plain"] *,
@@ -3300,17 +3092,15 @@ body:is([data-screen="gameplay"],[data-screen="reflection"]) #content { padding-
 
 /* Every system reduced-motion selector also supports the session control. */
 html[data-motion="reduced"] .era-art .flame { animation: auto ease 0s 1 normal none running none; }
-html[data-motion="reduced"] .lamp { animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .passage { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
-html[data-motion="reduced"] .passage p, html[data-motion="reduced"] .passage .artifact, html[data-motion="reduced"] .passage .choices, html[data-motion="reduced"] .passage .tally, html[data-motion="reduced"] .tally li, html[data-motion="reduced"] .reflection-question { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
-html[data-motion="reduced"] body[data-screen="title"] h1, html[data-motion="reduced"] body[data-screen="title"] .lamp { animation: auto ease 0s 1 normal none running none; }
-html[data-motion="reduced"] .dimmer.pulse { animation: auto ease 0s 1 normal none running none; }
-html[data-motion="reduced"] .lamp, html[data-motion="reduced"] body[data-screen="title"] .lamp, html[data-motion="reduced"] body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
-html[data-motion="reduced"] .passage, html[data-motion="reduced"] .passage p, html[data-motion="reduced"] .passage .artifact, html[data-motion="reduced"] .tally li { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
+html[data-motion="reduced"] .passage p,html[data-motion="reduced"] .passage .artifact,html[data-motion="reduced"] .passage .choices { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
+html[data-motion="reduced"] body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
+html[data-motion="reduced"] body[data-screen="title"] h1 { animation: auto ease 0s 1 normal none running none; }
+html[data-motion="reduced"] .passage,html[data-motion="reduced"] .passage p,html[data-motion="reduced"] .passage .artifact { animation: auto ease 0s 1 normal none running none !important; opacity: 1 !important; }
 html[data-motion="reduced"] #fadeOverlay { display: none; }
 
 html[data-motion="reduced"] .choices.revealed, html[data-motion="reduced"] .note-discovery, html[data-motion="reduced"] .quiet-moment { transition: none; animation: auto ease 0s 1 normal none running none; }
-html[data-motion="reduced"] .title-cave-art, html[data-motion="reduced"] .title-light-beam, html[data-motion="reduced"] .title-mist, html[data-motion="reduced"] .title-particles i, html[data-motion="reduced"] .title-card, html[data-motion="reduced"] .title-mark{ animation: auto ease 0s 1 normal none running none !important; }
+html[data-motion="reduced"] .title-mist,html[data-motion="reduced"] .title-particles i,html[data-motion="reduced"] .title-card,html[data-motion="reduced"] .title-mark{ animation: auto ease 0s 1 normal none running none !important; }
 html[data-motion="reduced"] .title-world, html[data-motion="reduced"] .title-hero.cave-entering .title-world { transform: none !important; transition: none !important; }
 html[data-motion="reduced"] .title-flashlight { display: none; }
 html[data-motion="reduced"] .title-hero.cave-entering::after { animation: auto ease 0s 1 normal none running none; opacity: 1; }
@@ -3319,7 +3109,6 @@ html[data-motion="reduced"] .title-menu .menu-primary, html[data-motion="reduced
 html[data-motion="reduced"] body:not([data-screen]) #content > .passage:has(.reflection-shell)::before { animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .reflection-shell > * { animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .path-card, html[data-motion="reduced"] .journey-card, html[data-motion="reduced"] .summary-card, html[data-motion="reduced"] .decision-review, html[data-motion="reduced"] .reflection-finale { transition: none; }
-html[data-motion="reduced"] .title-discovery-hint { animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .journal-panel, html[data-motion="reduced"] #journalEntries, html[data-motion="reduced"] .journal-btn, html[data-motion="reduced"] .journal-btn svg, html[data-motion="reduced"] .title-menu button, html[data-motion="reduced"] button { transition-duration: 0.01ms !important; }
 html[data-motion="reduced"] .credits-shell, html[data-motion="reduced"] .credits-card, html[data-motion="reduced"] .disclaimer-body { animation: auto ease 0s 1 normal none running none; }
 html[data-motion="reduced"] .credits-return, html[data-motion="reduced"] .disclaimer-icon { transition: none; }
@@ -4127,9 +3916,14 @@ function choiceReflection(record) {
   return "Some knowledge is preserved through restraint.";
 }
 
+// Story data is static and saves are validated against it, but values placed into
+// innerHTML are still escaped so markup can never come from data.
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+}
 function showNoteDiscovery(term) {
   const box = document.getElementById('noteDiscovery');
-  box.innerHTML = `<div class="note-discovery-inner"><strong>Historical note collected</strong><small>${term}</small></div>`;
+  box.innerHTML = `<div class="note-discovery-inner"><strong>Historical note collected</strong><small>${escapeHTML(term)}</small></div>`;
   box.classList.add('show');
   setTimeout(() => box.classList.remove('show'), 1500);
 }
@@ -4752,7 +4546,7 @@ function wireExaminables(scope) {
       note.className = 'exam-note';
       note.dataset.term = el.textContent.trim();
       note.setAttribute('role', 'note');
-      note.innerHTML = `<strong>Historical context</strong><div>${el.dataset.note || 'No additional context is available.'}</div><button type="button" class="exam-note-close" aria-label="Close context: ${el.textContent.trim()}">Close context</button>`;
+      note.innerHTML = `<strong>Historical context</strong><div>${escapeHTML(el.dataset.note || 'No additional context is available.')}</div><button type="button" class="exam-note-close" aria-label="Close context: ${escapeHTML(el.textContent.trim())}">Close context</button>`;
 
       const paragraph = el.closest('p');
       if (paragraph) paragraph.insertAdjacentElement('afterend', note);
@@ -4843,7 +4637,7 @@ function refreshJournal() {
     state.notes.forEach(n => {
       const d = document.createElement('div');
       d.className = 'historical-entry';
-      d.innerHTML = `<div class="journal-row"><span class="journal-icon" aria-hidden="true">✦</span><div class="journal-row-content"><strong>${n.term}</strong><small>${n.note}</small></div></div>`;
+      d.innerHTML = `<div class="journal-row"><span class="journal-icon" aria-hidden="true">✦</span><div class="journal-row-content"><strong>${escapeHTML(n.term)}</strong><small>${escapeHTML(n.note)}</small></div></div>`;
       historySection.appendChild(d);
     });
     const remaining = Math.max(0, TOTAL_HISTORICAL_NOTES - state.notes.length);
@@ -4870,7 +4664,7 @@ function refreshJournal() {
       const eraClass = { 'Deep Past': 'era-l1', 'Lantern Age': 'era-l2', 'Present': 'era-l3' }[c.era] || '';
       const statusIcon = c.preserved ? '✓' : '◇';
       const statusLabel = c.preserved ? 'Entered the record' : 'Held in restraint';
-      d.innerHTML = `<div class="decision-meta"><strong><span class="era-dot ${eraClass}" aria-hidden="true"></span>${c.era}</strong><span class="dimension-tag">${dimension.label}</span><span class="entry-status" role="img" aria-label="${statusLabel}">${statusIcon}</span></div><span>${c.text}</span><small>${choiceReflection(c)}</small>`;
+      d.innerHTML = `<div class="decision-meta"><strong><span class="era-dot ${eraClass}" aria-hidden="true"></span>${escapeHTML(c.era)}</strong><span class="dimension-tag">${escapeHTML(dimension.label)}</span><span class="entry-status" role="img" aria-label="${statusLabel}">${statusIcon}</span></div><span>${escapeHTML(c.text)}</span><small>${escapeHTML(choiceReflection(c))}</small>`;
       decisionsSection.appendChild(d);
     });
   }
@@ -5811,7 +5605,7 @@ function buildDecisionReview(preserved, released) {
     const ul = document.createElement('ul');
     items.forEach(c => {
       const li = document.createElement('li');
-      li.innerHTML = `<strong>${c.text}</strong><br>${c.consequence}`;
+      li.innerHTML = `<strong>${escapeHTML(c.text)}</strong><br>${escapeHTML(c.consequence)}`;
       ul.appendChild(li);
     });
     group.appendChild(ul);
@@ -5875,7 +5669,7 @@ function renderReflection(wrap) {
   exportBtn.type = 'button';
   exportBtn.className = 'continue-btn playtest-export-btn';
   exportBtn.innerHTML = '<span aria-hidden="true">⇩</span> Export Playtest Data (.txt)';
-  exportBtn.setAttribute('aria-label', 'Export this playtest session as a text file');
+  exportBtn.setAttribute('aria-label', 'Export Playtest Data (.txt): save this session as a text file');
   exportBtn.addEventListener('click', exportPlaytestReport);
   choicesDiv.appendChild(exportBtn);
 
@@ -5896,7 +5690,6 @@ function renderReflection(wrap) {
   creditsBtn.type = 'button';
   creditsBtn.className = 'continue-btn';
   creditsBtn.textContent = 'Credits & Disclaimer';
-  creditsBtn.setAttribute('aria-label', 'View credits and disclaimer');
   creditsBtn.addEventListener('click', () => navigateTo('credits', { animateBrand: true }));
   choicesDiv.appendChild(creditsBtn);
   shell.appendChild(choicesDiv);
